@@ -13,32 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.bigspark.stage.lib.sample;
+package dev.bigspark.stage.processor.neodatavalidator;
 
-import com.streamsets.pipeline.api.ErrorCode;
+import com.streamsets.pipeline.api.ConfigDef;
+import com.streamsets.pipeline.api.ConfigGroups;
 import com.streamsets.pipeline.api.GenerateResourceBundle;
+import com.streamsets.pipeline.api.StageDef;
 
+@StageDef(
+    version = 1,
+    label = "NeoProcessor",
+    description = "",
+    icon = "default.png",
+    onlineHelpRefUrl = ""
+    
+)
+@ConfigGroups(Groups.class)
 @GenerateResourceBundle
-public enum Errors implements ErrorCode {
+public class NeoDProcessor extends NeoProcessor {
 
-  SAMPLE_00("A configuration is invalid because: {}"),
-  SAMPLE_01("Specific reason writing record failed: {}"),
-  ;
-  private final String msg;
-
-  Errors(String msg) {
-    this.msg = msg;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public String getCode() {
-    return name();
-  }
+  @ConfigDef(
+      required = true,
+      type = ConfigDef.Type.STRING,
+      defaultValue = "default",
+      label = "Config",
+      displayPosition = 10,
+      group = "NEODATAVALIDATOR"
+  )
+  public String config;
 
   /** {@inheritDoc} */
   @Override
-  public String getMessage() {
-    return msg;
+  public String getConfig() {
+    return config;
   }
+
 }

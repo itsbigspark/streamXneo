@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.bigspark.stage.processor.sample;
+package dev.bigspark.stage.processor.neodatavalidator;
 
-import dev.bigspark.stage.lib.sample.Errors;
+import dev.bigspark.stage.lib.neodatavalidator.Errors;
 
 import com.streamsets.pipeline.api.Record;
 import com.streamsets.pipeline.api.StageException;
@@ -23,8 +23,12 @@ import com.streamsets.pipeline.api.base.SingleLaneRecordProcessor;
 
 import java.util.List;
 
-public abstract class SampleProcessor extends SingleLaneRecordProcessor {
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+public abstract class NeoProcessor extends SingleLaneRecordProcessor {
+  private static final Logger LOG = LoggerFactory.getLogger(NeoProcessor.class);
   /**
    * Gives access to the UI configuration of the stage provided by the {@link SampleDProcessor} class.
    */
@@ -39,7 +43,7 @@ public abstract class SampleProcessor extends SingleLaneRecordProcessor {
     if (getConfig().equals("invalidValue")) {
       issues.add(
           getContext().createConfigIssue(
-              Groups.SAMPLE.name(), "config", Errors.SAMPLE_00, "Here's what's wrong..."
+              Groups.NEODATAVALIDATOR.name(), "config", Errors.ERROR_00, "Here's what's wrong..."
           )
       );
     }
@@ -59,6 +63,8 @@ public abstract class SampleProcessor extends SingleLaneRecordProcessor {
   @Override
   protected void process(Record record, SingleLaneBatchMaker batchMaker) throws StageException {
     // TODO: Implement your record processing here, then add to the output batch.
+
+    LOG.info("Input record: {}", record);
 
     // This example is a no-op
     batchMaker.addRecord(record);

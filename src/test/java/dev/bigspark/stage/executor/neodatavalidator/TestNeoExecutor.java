@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.bigspark.stage.destination.sample;
+package dev.bigspark.stage.executor.neodatavalidator;
 
 import com.streamsets.pipeline.api.Field;
 import com.streamsets.pipeline.api.Record;
 import com.streamsets.pipeline.sdk.RecordCreator;
-import com.streamsets.pipeline.sdk.TargetRunner;
+import com.streamsets.pipeline.sdk.ExecutorRunner;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TestSampleTarget {
+public class TestNeoExecutor {
   @Test
   public void testWriteSingleRecord() throws Exception {
-    TargetRunner runner = new TargetRunner.Builder(SampleDTarget.class)
+    ExecutorRunner runner = new ExecutorRunner.Builder(NeoDExecutor.class)
         .addConfiguration("config", "value")
         .build();
 

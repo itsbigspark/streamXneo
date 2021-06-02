@@ -13,25 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.bigspark.stage.executor.sample;
+package dev.bigspark.stage.destination.neodatavalidator;
 
+import com.streamsets.pipeline.api.ConfigDef;
+import com.streamsets.pipeline.api.ConfigGroups;
 import com.streamsets.pipeline.api.GenerateResourceBundle;
-import com.streamsets.pipeline.api.Label;
+import com.streamsets.pipeline.api.StageDef;
 
+@StageDef(
+    version = 1,
+    label = "Sample Destination",
+    description = "",
+    icon = "default.png",
+    recordsByRef = true,
+    onlineHelpRefUrl = ""
+)
+@ConfigGroups(value = Groups.class)
 @GenerateResourceBundle
-public enum Groups implements Label {
-  SAMPLE("Sample"),
-  ;
+public class NeoDTarget extends NeoTarget {
 
-  private final String label;
-
-  private Groups(String label) {
-    this.label = label;
-  }
+  @ConfigDef(
+      required = true,
+      type = ConfigDef.Type.STRING,
+      defaultValue = "default",
+      label = "Sample Config",
+      displayPosition = 10,
+      group = "SAMPLE"
+  )
+  public String config;
 
   /** {@inheritDoc} */
   @Override
-  public String getLabel() {
-    return this.label;
+  public String getConfig() {
+    return config;
   }
+
 }

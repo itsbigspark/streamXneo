@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.bigspark.stage.executor.sample;
+package dev.bigspark.stage.destination.neodatavalidator;
 
-import dev.bigspark.stage.lib.sample.Errors;
+import dev.bigspark.stage.lib.neodatavalidator.Errors;
 
 import com.streamsets.pipeline.api.Batch;
 import com.streamsets.pipeline.api.Record;
 import com.streamsets.pipeline.api.StageException;
-import com.streamsets.pipeline.api.base.BaseExecutor;
+import com.streamsets.pipeline.api.base.BaseTarget;
 import com.streamsets.pipeline.api.base.OnRecordErrorException;
 import com.streamsets.pipeline.api.impl.Utils;
 
@@ -28,12 +28,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * This executor is an example and does not actually perform any actions.
+ * This target is an example and does not actually write to any destination.
  */
-public abstract class SampleExecutor extends BaseExecutor {
+public abstract class NeoTarget extends BaseTarget {
 
   /**
-   * Gives access to the UI configuration of the stage provided by the {@link SampleDExecutor} class.
+   * Gives access to the UI configuration of the stage provided by the {@link NeoDTarget} class.
    */
   public abstract String getConfig();
 
@@ -46,7 +46,7 @@ public abstract class SampleExecutor extends BaseExecutor {
     if (getConfig().equals("invalidValue")) {
       issues.add(
           getContext().createConfigIssue(
-              Groups.SAMPLE.name(), "config", Errors.SAMPLE_00, "Here's what's wrong..."
+            Groups.NEODATAVALIDATOR.name(), "config", Errors.ERROR_00, "Here's what's wrong..."
           )
       );
     }
@@ -70,16 +70,16 @@ public abstract class SampleExecutor extends BaseExecutor {
     while (batchIterator.hasNext()) {
       Record record = batchIterator.next();
       try {
-        execute(record);
+        write(record);
       } catch (Exception e) {
         switch (getContext().getOnErrorRecord()) {
           case DISCARD:
             break;
           case TO_ERROR:
-            getContext().toError(record, Errors.SAMPLE_01, e.toString());
+            getContext().toError(record, Errors.ERROR_01, e.toString());
             break;
           case STOP_PIPELINE:
-            throw new StageException(Errors.SAMPLE_01, e.toString());
+            throw new StageException(Errors.ERROR_01, e.toString());
           default:
             throw new IllegalStateException(
                 Utils.format("Unknown OnError value '{}'", getContext().getOnErrorRecord(), e)
@@ -90,20 +90,20 @@ public abstract class SampleExecutor extends BaseExecutor {
   }
 
   /**
-   * Executes an action for given record.
+   * Writes a single record to the destination.
    *
-   * @param record the record that will parametrize the action
-   * @throws OnRecordErrorException when action can't be executed
+   * @param record the record to write to the destination.
+   * @throws OnRecordErrorException when a record cannot be written.
    */
-  private void execute(Record record) throws OnRecordErrorException {
+  private void write(Record record) throws OnRecordErrorException {
     // This is a contrived example, normally you may be performing an operation that could throw
     // an exception or produce an error condition. In that case you can throw an OnRecordErrorException
     // to send this record to the error pipeline with some details.
     if (!record.has("/someField")) {
-      throw new OnRecordErrorException(Errors.SAMPLE_01, record, "exception detail message.");
+      throw new OnRecordErrorException(Errors.ERROR_01, record, "exception detail message.");
     }
 
-    // TODO: execute action
+    // TODO: write the records to your final destination
   }
 
 }

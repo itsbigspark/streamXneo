@@ -13,26 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.bigspark.stage.origin.sample;
+package dev.bigspark.stage.executor.neodatavalidator;
 
 import com.streamsets.pipeline.api.ConfigDef;
 import com.streamsets.pipeline.api.ConfigGroups;
-import com.streamsets.pipeline.api.ExecutionMode;
 import com.streamsets.pipeline.api.GenerateResourceBundle;
 import com.streamsets.pipeline.api.StageDef;
 
 @StageDef(
     version = 1,
-    label = "Sample Origin",
+    label = "Sample Executor",
     description = "",
     icon = "default.png",
-    execution = ExecutionMode.STANDALONE,
     recordsByRef = true,
     onlineHelpRefUrl = ""
 )
 @ConfigGroups(value = Groups.class)
 @GenerateResourceBundle
-public class SampleDSource extends SampleSource {
+public class NeoDExecutor extends NeoExecutor {
 
   @ConfigDef(
       required = true,

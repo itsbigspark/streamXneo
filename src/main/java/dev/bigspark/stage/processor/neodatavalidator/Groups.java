@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.bigspark.stage.origin.sample;
+package dev.bigspark.stage.processor.neodatavalidator;
 
 import com.streamsets.pipeline.api.GenerateResourceBundle;
 import com.streamsets.pipeline.api.Label;
 
 @GenerateResourceBundle
 public enum Groups implements Label {
-  SAMPLE("Sample"),
+  NEODATAVALIDATOR("datavalidator"),
   ;
 
   private final String label;

@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.bigspark.stage.destination.sample;
+package dev.bigspark.stage.executor.neodatavalidator;
 
-import dev.bigspark.stage.lib.sample.Errors;
+import dev.bigspark.stage.lib.neodatavalidator.Errors;
 
 import com.streamsets.pipeline.api.Batch;
 import com.streamsets.pipeline.api.Record;
 import com.streamsets.pipeline.api.StageException;
-import com.streamsets.pipeline.api.base.BaseTarget;
+import com.streamsets.pipeline.api.base.BaseExecutor;
 import com.streamsets.pipeline.api.base.OnRecordErrorException;
 import com.streamsets.pipeline.api.impl.Utils;
 
@@ -28,12 +28,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * This target is an example and does not actually write to any destination.
+ * This executor is an example and does not actually perform any actions.
  */
-public abstract class SampleTarget extends BaseTarget {
+public abstract class NeoExecutor extends BaseExecutor {
 
   /**
-   * Gives access to the UI configuration of the stage provided by the {@link SampleDTarget} class.
+   * Gives access to the UI configuration of the stage provided by the {@link NeoDExecutor} class.
    */
   public abstract String getConfig();
 
@@ -46,7 +46,7 @@ public abstract class SampleTarget extends BaseTarget {
     if (getConfig().equals("invalidValue")) {
       issues.add(
           getContext().createConfigIssue(
-              Groups.SAMPLE.name(), "config", Errors.SAMPLE_00, "Here's what's wrong..."
+            Groups.NEODATAVALIDATOR.name(), "config", Errors.ERROR_00, "Here's what's wrong..."
           )
       );
     }
@@ -70,7 +70,7 @@ public abstract class SampleTarget extends BaseTarget {
     while (batchIterator.hasNext()) {
       Record record = batchIterator.next();
       try {
-        write(record);
+        execute(record);
       } catch (Exception e) {
         switch (getContext().getOnErrorRecord()) {
           case DISCARD:
@@ -90,12 +90,12 @@ public abstract class SampleTarget extends BaseTarget {
   }
 
   /**
-   * Writes a single record to the destination.
+   * Executes an action for given record.
    *
-   * @param record the record to write to the destination.
-   * @throws OnRecordErrorException when a record cannot be written.
+   * @param record the record that will parametrize the action
+   * @throws OnRecordErrorException when action can't be executed
    */
-  private void write(Record record) throws OnRecordErrorException {
+  private void execute(Record record) throws OnRecordErrorException {
     // This is a contrived example, normally you may be performing an operation that could throw
     // an exception or produce an error condition. In that case you can throw an OnRecordErrorException
     // to send this record to the error pipeline with some details.
@@ -103,7 +103,7 @@ public abstract class SampleTarget extends BaseTarget {
       throw new OnRecordErrorException(Errors.SAMPLE_01, record, "exception detail message.");
     }
 
-    // TODO: write the records to your final destination
+    // TODO: execute action
   }
 
 }

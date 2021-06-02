@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.bigspark.stage.origin.sample;
+package dev.bigspark.stage.origin.neodatavalidator;
 
-import dev.bigspark.stage.lib.sample.Errors;
+import dev.bigspark.stage.lib.neodatavalidator.Errors;
 import com.streamsets.pipeline.api.BatchMaker;
 import com.streamsets.pipeline.api.Field;
 import com.streamsets.pipeline.api.Record;
@@ -30,10 +30,10 @@ import java.util.Map;
  * This source is an example and does not actually read from anywhere.
  * It does however, generate generate a simple record with one field.
  */
-public abstract class SampleSource extends BaseSource {
+public abstract class NeoSource extends BaseSource {
 
   /**
-   * Gives access to the UI configuration of the stage provided by the {@link SampleDSource} class.
+   * Gives access to the UI configuration of the stage provided by the {@link NeoDSource} class.
    */
   public abstract String getConfig();
 
@@ -45,7 +45,7 @@ public abstract class SampleSource extends BaseSource {
     if (getConfig().equals("invalidValue")) {
       issues.add(
           getContext().createConfigIssue(
-              Groups.SAMPLE.name(), "config", Errors.SAMPLE_00, "Here's what's wrong..."
+            Groups.NEODATAVALIDATOR.name(), "config", Errors.ERROR_00, "Here's what's wrong..."
           )
       );
     }
