@@ -62,10 +62,10 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
   /** {@inheritDoc} */
   @Override
   protected void process(Record record, SingleLaneBatchMaker batchMaker) throws StageException {
-    // TODO: Implement your record processing here, then add to the output batch.
-
     LOG.info("Input record: {}", record);
 
+    JSONObject jsonObject = new JSONObject(record);
+    
     // This example is a no-op
     batchMaker.addRecord(record);
   }
