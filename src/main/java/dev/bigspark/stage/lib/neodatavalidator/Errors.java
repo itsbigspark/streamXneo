@@ -24,6 +24,7 @@ public enum Errors implements ErrorCode {
   ERROR_00("A configuration issue has occured: {}"),
   ERROR_01("Specific reason writing record failed: {}"),
   ERROR_02("JSON supplied not parsed: {}"),
+  ERROR_03("A different data type found whilst JSON was exepected: {}"),
   ;
   private final String msg;
 

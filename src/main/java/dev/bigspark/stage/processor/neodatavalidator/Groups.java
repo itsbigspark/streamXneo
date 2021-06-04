@@ -20,7 +20,9 @@ import com.streamsets.pipeline.api.Label;
 
 @GenerateResourceBundle
 public enum Groups implements Label {
-  NEODATAVALIDATOR("datavalidator"),
+  JSONValidator("JSON Validator"),
+  RemoveKeep("Remove/Keep"),
+  Flatten("Flatten"),
   ;
 
   private final String label;

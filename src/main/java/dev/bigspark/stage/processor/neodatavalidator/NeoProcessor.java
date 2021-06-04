@@ -19,11 +19,16 @@ import dev.bigspark.stage.lib.neodatavalidator.Errors;
 
 import com.streamsets.pipeline.api.Record;
 import com.streamsets.pipeline.api.StageException;
+import com.streamsets.pipeline.api.base.OnRecordErrorException;
 import com.streamsets.pipeline.api.base.SingleLaneRecordProcessor;
 
 import java.util.List;
 
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.ValidationException;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +37,12 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
   /**
    * Gives access to the UI configuration of the stage provided by the {@link SampleDProcessor} class.
    */
-  public abstract String getConfig();
+  public abstract String getJSONValidator();
+  public abstract String getRemoveKeep();
+  public abstract String getFlatten();
+
+  JSONObject jsonSchemaObject;
+  Schema schema;
 
   /** {@inheritDoc} */
   @Override
@@ -40,13 +50,15 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
     // Validate configuration values and open any required resources.
     List<ConfigIssue> issues = super.init();
 
-    if (getConfig().equals("invalidValue")) {
+    // Ensure that data format is only JSON
+    if (!getJSONValidator().equals("JSON")) {
       issues.add(
           getContext().createConfigIssue(
-              Groups.NEODATAVALIDATOR.name(), "config", Errors.ERROR_00, "Here's what's wrong..."
+              Groups.JSONValidator.name(), "config", Errors.ERROR_03, "Here's what's wrong..."
           )
       );
     }
+    //Confirm data input is of JSON format
 
     // If issues is not empty, the UI will inform the user of each configuration issue in the list.
     return issues;
@@ -64,7 +76,21 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
   protected void process(Record record, SingleLaneBatchMaker batchMaker) throws StageException {
     LOG.info("Input record: {}", record);
 
-    JSONObject jsonObject = new JSONObject(record);
+    //Read record value as string and tokenize for processing 
+
+    try {
+      JSONObject jsonObject = new JSONObject(
+        new JSONTokener(record.get(getJSONValidator()).getValue().toString()));
+
+      this.schema.validate(jsonObject);
+      
+    } catch (JSONException e) {
+      throw new OnRecordErrorException(record, Errors.ERROR_02, e);
+    } catch (ValidationException e) {
+      throw new OnRecordErrorException(record, Errors.ERROR_02, e);
+    }
+    
+    LOG.info("Output record: {}", record);
     
     // This example is a no-op
     batchMaker.addRecord(record);

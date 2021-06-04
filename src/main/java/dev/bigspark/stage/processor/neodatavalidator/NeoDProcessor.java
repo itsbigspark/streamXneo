@@ -22,30 +22,66 @@ import com.streamsets.pipeline.api.StageDef;
 
 @StageDef(
     version = 1,
-    label = "NeoProcessor",
+    label = "Neo4j Processor",
     description = "",
-    icon = "default.png",
+    icon = "neo4j-icon.png",
     onlineHelpRefUrl = ""
     
 )
 @ConfigGroups(Groups.class)
 @GenerateResourceBundle
 public class NeoDProcessor extends NeoProcessor {
-
+  /** Verify JSON format from origin */
   @ConfigDef(
       required = true,
       type = ConfigDef.Type.STRING,
-      defaultValue = "default",
-      label = "Config",
+      mode = ConfigDef.Mode.JSON,
+      defaultValue = "JSON",
+      label = "Data Format",
       displayPosition = 10,
-      group = "NEODATAVALIDATOR"
+      group = "JSONValidator"
   )
-  public String config;
+  public String jsonvalidator;
+
+  /** Remove fields from JSON */
+  @ConfigDef(
+    required = false,
+    type = ConfigDef.Type.STRING,
+    defaultValue = "default",
+    label = "Remove/Keep",
+    displayPosition = 10,
+    group = "RemoveKeep"
+  )
+  public String removekeep;
+
+  /** Flatten out nested fields in JSON */
+  @ConfigDef(
+    required = false,
+    type = ConfigDef.Type.STRING,
+    defaultValue = "default",
+    label = "Flatten",
+    displayPosition = 10,
+    group = "Flatten"
+  )
+  public String flatten;
+
+  /** {@inheritDoc} */
+    @Override
+    public String getJSONValidator() {
+      return flatten;
+  }
 
   /** {@inheritDoc} */
   @Override
-  public String getConfig() {
-    return config;
+  public String getRemoveKeep() {
+    return jsonvalidator;
   }
+
+  /** {@inheritDoc} */
+   @Override
+   public String getFlatten() {
+     return removekeep;
+   }
+
 
 }
