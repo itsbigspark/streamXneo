@@ -97,4 +97,9 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
     batchMaker.addRecord(record);
   }
 
+  /** Run Cypher query */
+  public void runQuery(String query){
+    
+  }
+
 }
