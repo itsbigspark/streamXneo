@@ -65,6 +65,17 @@ public class NeoDProcessor extends NeoProcessor {
   )
   public String flatten;
 
+   /** Apply cypher query */
+   @ConfigDef(
+    required = false,
+    type = ConfigDef.Type.STRING,
+    defaultValue = "default",
+    label = "Cypher",
+    displayPosition = 10,
+    group = "Cypher"
+  )
+  public String cypherquery;
+
   /** {@inheritDoc} */
     @Override
     public String getJSONValidator() {
@@ -81,6 +92,12 @@ public class NeoDProcessor extends NeoProcessor {
    @Override
    public String getFlatten() {
      return removekeep;
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public String getQuery() {
+     return cypherquery;
    }
 
 

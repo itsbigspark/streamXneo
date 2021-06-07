@@ -23,6 +23,7 @@ public enum Groups implements Label {
   JSONValidator("JSON Validator"),
   RemoveKeep("Remove/Keep"),
   Flatten("Flatten"),
+  Cypher("Cypher")
   ;
 
   private final String label;

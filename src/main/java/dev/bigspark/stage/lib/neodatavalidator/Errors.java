@@ -25,6 +25,7 @@ public enum Errors implements ErrorCode {
   ERROR_01("Specific reason writing record failed: {}"),
   ERROR_02("JSON supplied not parsed: {}"),
   ERROR_03("A different data type found whilst JSON was exepected: {}"),
+  ERROR_04("Cypher query couldn't be processed: {}"),
   ;
   private final String msg;
 

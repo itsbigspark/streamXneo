@@ -40,6 +40,7 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
   public abstract String getJSONValidator();
   public abstract String getRemoveKeep();
   public abstract String getFlatten();
+  public abstract String getQuery();
 
   JSONObject jsonSchemaObject;
   Schema schema;
