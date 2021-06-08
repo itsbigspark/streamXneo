@@ -30,6 +30,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <!-- end Dependencies-->
   <dependencies>
     <!-- Core StreamSets Dependencies for Stage Libraries -->
     <!-- Need to be without snapshot at any the point of the release -->
@@ -61,10 +62,15 @@
       <artifactId>org.everit.json.schema</artifactId>
       <version>1.12.2</version>
     </dependency>
-    <!-- end -->
-
-    <!-- Test Dependencies -->
     <dependency>
+	    <groupId>com.github.wnameless</groupId>
+	    <artifactId>json-flattener</artifactId>
+	    <version>0.2.2</version>
+    </dependency>
+  <!-- end Dependencies-->
+
+  <!-- Test Dependencies -->
+  <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
@@ -77,7 +83,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <!-- end -->
+  <!-- end Test Dependencies-->
 
   <!-- Repositories -->
   <repositories>
@@ -86,7 +92,7 @@
         <url>https://jitpack.io</url>
     </repository>
   </repositories>
-  <!-- end -->
+  <!-- end Repositories-->
   
   <build>
     <plugins>

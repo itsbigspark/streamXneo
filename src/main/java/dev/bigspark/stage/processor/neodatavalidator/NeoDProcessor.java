@@ -15,15 +15,19 @@
  */
 package dev.bigspark.stage.processor.neodatavalidator;
 
+import java.util.ArrayList;
+
 import com.streamsets.pipeline.api.ConfigDef;
 import com.streamsets.pipeline.api.ConfigGroups;
+import com.streamsets.pipeline.api.FieldSelectorModel;
 import com.streamsets.pipeline.api.GenerateResourceBundle;
 import com.streamsets.pipeline.api.StageDef;
+import com.streamsets.pipeline.api.ValueChooserModel;
 
 @StageDef(
     version = 1,
     label = "Neo4j Processor",
-    description = "",
+    description = "Custom Processor for Neo4j",
     icon = "neo4j-icon.png",
     onlineHelpRefUrl = ""
     
@@ -31,73 +35,74 @@ import com.streamsets.pipeline.api.StageDef;
 @ConfigGroups(Groups.class)
 @GenerateResourceBundle
 public class NeoDProcessor extends NeoProcessor {
-  /** Verify JSON format from origin */
-  @ConfigDef(
-      required = true,
-      type = ConfigDef.Type.STRING,
-      mode = ConfigDef.Mode.JSON,
-      defaultValue = "JSON",
-      label = "Data Format",
-      displayPosition = 10,
-      group = "JSONValidator"
-  )
-  public String jsonvalidator;
-
-  /** Remove fields from JSON */
+  
+  /** Data Preprocessor Config */
   @ConfigDef(
     required = false,
-    type = ConfigDef.Type.STRING,
-    defaultValue = "default",
+    type = ConfigDef.Type.MODEL,
     label = "Remove/Keep",
     displayPosition = 10,
-    group = "RemoveKeep"
+    group = "DATAPREPROCESSOR"
   )
-  public String removekeep;
+  @FieldSelectorModel(singleValued = false)
+  public ArrayList<String> removekeep;
 
-  /** Flatten out nested fields in JSON */
   @ConfigDef(
     required = false,
-    type = ConfigDef.Type.STRING,
-    defaultValue = "default",
+    type = ConfigDef.Type.MODEL,
+    defaultValue = "No",
     label = "Flatten",
     displayPosition = 10,
-    group = "Flatten"
+    group = "DATAPREPROCESSOR"
   )
+
+  @ValueChooserModel(BinaryResponseValues.class)
   public String flatten;
 
-   /** Apply cypher query */
+  /** Cypher Config */
    @ConfigDef(
     required = false,
-    type = ConfigDef.Type.STRING,
+    type = ConfigDef.Type.TEXT,
     defaultValue = "default",
-    label = "Cypher",
+    label = "Create",
     displayPosition = 10,
-    group = "Cypher"
+    group = "CYPHER"
   )
-  public String cypherquery;
+  public String createquery;
 
-  /** {@inheritDoc} */
-    @Override
-    public String getJSONValidator() {
-      return flatten;
-  }
+   /** Cypher Config */
+   @ConfigDef(
+    required = false,
+    type = ConfigDef.Type.TEXT,
+    defaultValue = "default",
+    label = "Create",
+    displayPosition = 10,
+    group = "CYPHER"
+  )
+  public String matchquery;
 
   /** {@inheritDoc} */
   @Override
-  public String getRemoveKeep() {
-    return jsonvalidator;
+  public ArrayList<String> getRemoveKeep() {
+    return removekeep;
   }
 
   /** {@inheritDoc} */
    @Override
    public String getFlatten() {
-     return removekeep;
+     return flatten;
    }
 
    /** {@inheritDoc} */
    @Override
-   public String getQuery() {
-     return cypherquery;
+   public String getCreateQuery() {
+     return createquery;
+   }
+
+   /** {@inheritDoc} */
+   @Override
+   public String getMatchQuery() {
+     return matchquery;
    }
 
 

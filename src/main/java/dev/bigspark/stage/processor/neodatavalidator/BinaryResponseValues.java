@@ -16,23 +16,12 @@
 package dev.bigspark.stage.processor.neodatavalidator;
 
 import com.streamsets.pipeline.api.GenerateResourceBundle;
-import com.streamsets.pipeline.api.Label;
+import com.streamsets.pipeline.api.base.BaseEnumChooserValues;
 
 @GenerateResourceBundle
-public enum Groups implements Label {
-  DATAPREPROCESSOR("Data Preprocessor"),
-  CYPHER("Cypher")
-  ;
-
-  private final String label;
-
-  private Groups(String label) {
-    this.label = label;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public String getLabel() {
-    return this.label;
+public class BinaryResponseValues extends BaseEnumChooserValues {
+  public BinaryResponseValues(){
+      super(BinaryResponse.class);
   }
 }
+

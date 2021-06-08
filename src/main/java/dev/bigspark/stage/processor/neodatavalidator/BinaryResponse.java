@@ -19,14 +19,15 @@ import com.streamsets.pipeline.api.GenerateResourceBundle;
 import com.streamsets.pipeline.api.Label;
 
 @GenerateResourceBundle
-public enum Groups implements Label {
-  DATAPREPROCESSOR("Data Preprocessor"),
-  CYPHER("Cypher")
+public enum BinaryResponse implements Label {
+  YES("Yes"),
+  NO("No"),
+  
   ;
 
   private final String label;
 
-  private Groups(String label) {
+  private BinaryResponse(String label) {
     this.label = label;
   }
 
