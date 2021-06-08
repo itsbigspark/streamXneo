@@ -40,12 +40,12 @@ public class NeoDProcessor extends NeoProcessor {
   @ConfigDef(
     required = false,
     type = ConfigDef.Type.MODEL,
-    label = "Remove/Keep",
+    label = "Remove",
     displayPosition = 10,
     group = "DATAPREPROCESSOR"
   )
   @FieldSelectorModel(singleValued = false)
-  public ArrayList<String> removekeep;
+  public ArrayList<String> removelist;
 
   @ConfigDef(
     required = false,
@@ -63,7 +63,7 @@ public class NeoDProcessor extends NeoProcessor {
    @ConfigDef(
     required = false,
     type = ConfigDef.Type.TEXT,
-    defaultValue = "default",
+    defaultValue = "Enter create query here",
     label = "Create",
     displayPosition = 10,
     group = "CYPHER"
@@ -74,8 +74,8 @@ public class NeoDProcessor extends NeoProcessor {
    @ConfigDef(
     required = false,
     type = ConfigDef.Type.TEXT,
-    defaultValue = "default",
-    label = "Create",
+    defaultValue = "Enter create query here",
+    label = "Match",
     displayPosition = 10,
     group = "CYPHER"
   )
@@ -83,8 +83,8 @@ public class NeoDProcessor extends NeoProcessor {
 
   /** {@inheritDoc} */
   @Override
-  public ArrayList<String> getRemoveKeep() {
-    return removekeep;
+  public ArrayList<String> getRemoveList() {
+    return removelist;
   }
 
   /** {@inheritDoc} */

@@ -20,11 +20,10 @@ import com.streamsets.pipeline.api.StageException;
 import com.streamsets.pipeline.api.base.SingleLaneRecordProcessor;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import org.everit.json.schema.Schema;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,13 +32,11 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
   /**
    * Gives access to the UI configuration of the stage provided by the {@link SampleDProcessor} class.
    */
-  public abstract ArrayList<String> getRemoveKeep();
+  public abstract ArrayList<String> getRemoveList();
   public abstract String getFlatten();
   public abstract String getCreateQuery();
   public abstract String getMatchQuery();
 
-  JSONObject jsonSchemaObject;
-  Schema schema;
 
   /** {@inheritDoc} */
   @Override
@@ -64,17 +61,28 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
   @Override
   protected void process(Record record, SingleLaneBatchMaker batchMaker) throws StageException {
     LOG.info("Input record: {}", record);
-
+    try {
+      
+      Record newrecord = applyRemove(record,getRemoveList());
+      LOG.info("Output record: {}", newrecord);
+      
+      // This example is a no-op
+      batchMaker.addRecord(newrecord);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     
-    LOG.info("Output record: {}", record);
-    
-    // This example is a no-op
-    batchMaker.addRecord(record);
+   
   }
 
-  /** Remove or keep field */
-  public void applyRemoveKeep(Record record,LinkedList<String> allfields,LinkedList<String> removekeeplist, String command){
+  /** Remove field */
+  public Record applyRemove(Record record,ArrayList<String> removelist){
 
+    for (String field : removelist) {
+      record.delete(field);
+    }
+
+    return record;
     
   }
 
