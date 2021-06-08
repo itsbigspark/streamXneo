@@ -63,11 +63,12 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
     LOG.info("Input record: {}", record);
     try {
       
+      //Remove fields from record
       Record newrecord = applyRemove(record,getRemoveList());
       LOG.info("Output record: {}", newrecord);
       
-      // This example is a no-op
       batchMaker.addRecord(newrecord);
+      
     } catch (Exception e) {
       e.printStackTrace();
     }
