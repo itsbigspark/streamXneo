@@ -22,8 +22,6 @@ import com.streamsets.pipeline.api.base.SingleLaneRecordProcessor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
-import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +41,6 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
   protected List<ConfigIssue> init() {
     // Validate configuration values and open any required resources.
     List<ConfigIssue> issues = super.init();
-
 
 
     // If issues is not empty, the UI will inform the user of each configuration issue in the list.
@@ -68,12 +65,11 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
       LOG.info("Output record: {}", newrecord);
       
       batchMaker.addRecord(newrecord);
-      
+
     } catch (Exception e) {
       e.printStackTrace();
     }
     
-   
   }
 
   /** Remove field */
