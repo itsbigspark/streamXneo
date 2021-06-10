@@ -27,6 +27,13 @@ import com.streamsets.pipeline.api.impl.Utils;
 import java.util.Iterator;
 import java.util.List;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+
 /**
  * This target is an example and does not actually write to any destination.
  */
@@ -38,6 +45,7 @@ public abstract class NeoTarget extends BaseTarget {
   public abstract String getURL();
   public abstract String getUsername();
   public abstract String getPassword();
+  public abstract String getQuery();
 
   /** {@inheritDoc} */
   @Override
@@ -99,6 +107,36 @@ public abstract class NeoTarget extends BaseTarget {
     }
 
     // TODO: write the records to your final destination
+    runQuery(record,getURL(),getUsername(),getPassword(),getQuery());
   }
 
+  private void runQuery(Record record, String url,String username, String password, String query){
+    try {
+      // Connecting
+      Connection con = DriverManager.getConnection(url,username, password);
+      // Querying
+      //String query = "MATCH (ee:Person)-[:KNOWS]-(friends) WHERE ee.name = \"Emil\" RETURN ee, friends";
+
+      try (PreparedStatement stmt = con.prepareStatement(query)) {
+          
+          
+          try (ResultSet rs = stmt.executeQuery()) {
+              ResultSetMetaData rsmd = rs.getMetaData();
+              int columnsNumber = rsmd.getColumnCount();
+              System.out.println( "Column Number : " + columnsNumber);
+
+              while (rs.next()) {
+                  for (int i = 1; i <= columnsNumber; i++) {
+                      String columnValue = rs.getString(i);
+                      System.out.println(columnValue + " " + rsmd.getColumnName(i));
+                  }
+              }
+          }
+      }
+  }
+  catch (SQLException e) {
+      //TODO: handle exception
+      e.printStackTrace();
+  }
+  }
 }

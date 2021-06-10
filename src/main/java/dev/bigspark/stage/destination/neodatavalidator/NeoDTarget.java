@@ -43,7 +43,7 @@ public class NeoDTarget extends NeoTarget {
   public String url;
 
   @ConfigDef(
-      required = true,
+      required = false,
       type = ConfigDef.Type.STRING,
       defaultValue = "",
       label = "Username",
@@ -53,7 +53,7 @@ public class NeoDTarget extends NeoTarget {
   public String username;
 
   @ConfigDef(
-    required = true,
+    required = false,
     type = ConfigDef.Type.STRING,
     defaultValue = "",
     label = "Password",
@@ -61,6 +61,16 @@ public class NeoDTarget extends NeoTarget {
     group = "NEO4J"
   )
   public String password;
+
+  @ConfigDef(
+    required = true,
+    type = ConfigDef.Type.TEXT,
+    defaultValue = "",
+    label = "Query",
+    displayPosition = 10,
+    group = "NEO4J"
+  )
+  public String query;
 
   /** {@inheritDoc} */
   @Override
@@ -77,6 +87,12 @@ public class NeoDTarget extends NeoTarget {
   /** {@inheritDoc} */
   @Override
   public String getPassword() {
+    return password;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public String getQuery() {
     return password;
   }
 
