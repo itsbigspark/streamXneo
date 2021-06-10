@@ -30,7 +30,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <!-- end Dependencies-->
+  <!-- Start Dependencies-->
   <dependencies>
     <!-- Core StreamSets Dependencies for Stage Libraries -->
     <!-- Need to be without snapshot at any the point of the release -->
@@ -39,6 +39,11 @@
       <artifactId>streamsets-datacollector-api</artifactId>
       <version>3.22.1</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.neo4j</groupId>
+      <artifactId>neo4j-jdbc-driver</artifactId>
+      <version>3.3.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -67,7 +72,7 @@
 	    <artifactId>json-flattener</artifactId>
 	    <version>0.2.2</version>
     </dependency>
-  <!-- end Dependencies-->
+  <!-- End Dependencies-->
 
   <!-- Test Dependencies -->
   <dependency>
@@ -83,7 +88,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <!-- end Test Dependencies-->
+  <!-- End Test Dependencies-->
 
   <!-- Repositories -->
   <repositories>
@@ -92,7 +97,7 @@
         <url>https://jitpack.io</url>
     </repository>
   </repositories>
-  <!-- end Repositories-->
+  <!-- End Repositories-->
   
   <build>
     <plugins>

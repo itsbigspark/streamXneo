@@ -16,23 +16,12 @@
 package dev.bigspark.stage.destination.neodatavalidator;
 
 import com.streamsets.pipeline.api.GenerateResourceBundle;
-import com.streamsets.pipeline.api.Label;
+import com.streamsets.pipeline.api.base.BaseEnumChooserValues;
 
 @GenerateResourceBundle
-public enum Groups implements Label {
-  NEO4J("Neo4J"),
-  DATAFORMAT("Data Format"),
-  ;
-
-  private final String label;
-
-  private Groups(String label) {
-    this.label = label;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public String getLabel() {
-    return this.label;
+public class AuthenticationValues extends BaseEnumChooserValues {
+  public AuthenticationValues(){
+      super(Authentication.class);
   }
 }
+

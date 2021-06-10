@@ -19,14 +19,15 @@ import com.streamsets.pipeline.api.GenerateResourceBundle;
 import com.streamsets.pipeline.api.Label;
 
 @GenerateResourceBundle
-public enum Groups implements Label {
-  NEO4J("Neo4J"),
-  DATAFORMAT("Data Format"),
+public enum Authentication implements Label {
+  NEO4JKEYS("Neo4j Keys"),
+  NONE("None"),
+  
   ;
 
   private final String label;
 
-  private Groups(String label) {
+  private Authentication(String label) {
     this.label = label;
   }
 

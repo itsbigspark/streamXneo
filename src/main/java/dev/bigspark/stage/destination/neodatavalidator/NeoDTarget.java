@@ -22,9 +22,9 @@ import com.streamsets.pipeline.api.StageDef;
 
 @StageDef(
     version = 1,
-    label = "Sample Destination",
+    label = "Neo4j Destination",
     description = "",
-    icon = "default.png",
+    icon = "neo4j-icon.png",
     recordsByRef = true,
     onlineHelpRefUrl = ""
 )
@@ -35,17 +35,49 @@ public class NeoDTarget extends NeoTarget {
   @ConfigDef(
       required = true,
       type = ConfigDef.Type.STRING,
-      defaultValue = "default",
-      label = "Sample Config",
+      defaultValue = "",
+      label = "URL",
       displayPosition = 10,
-      group = "SAMPLE"
+      group = "NEO4J"
   )
-  public String config;
+  public String url;
+
+  @ConfigDef(
+      required = true,
+      type = ConfigDef.Type.STRING,
+      defaultValue = "",
+      label = "Username",
+      displayPosition = 10,
+      group = "NEO4J"
+  )
+  public String username;
+
+  @ConfigDef(
+    required = true,
+    type = ConfigDef.Type.STRING,
+    defaultValue = "",
+    label = "Password",
+    displayPosition = 10,
+    group = "NEO4J"
+  )
+  public String password;
 
   /** {@inheritDoc} */
   @Override
-  public String getConfig() {
-    return config;
+  public String getURL(){
+    return url;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public String getUsername() {
+    return username;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public String getPassword() {
+    return password;
   }
 
 }

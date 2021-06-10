@@ -35,7 +35,9 @@ public abstract class NeoTarget extends BaseTarget {
   /**
    * Gives access to the UI configuration of the stage provided by the {@link NeoDTarget} class.
    */
-  public abstract String getConfig();
+  public abstract String getURL();
+  public abstract String getUsername();
+  public abstract String getPassword();
 
   /** {@inheritDoc} */
   @Override
@@ -43,14 +45,7 @@ public abstract class NeoTarget extends BaseTarget {
     // Validate configuration values and open any required resources.
     List<ConfigIssue> issues = super.init();
 
-    if (getConfig().equals("invalidValue")) {
-      issues.add(
-          getContext().createConfigIssue(
-            Groups.NEODATAVALIDATOR.name(), "config", Errors.ERROR_00, "Here's what's wrong..."
-          )
-      );
-    }
-
+  
     // If issues is not empty, the UI will inform the user of each configuration issue in the list.
     return issues;
   }
