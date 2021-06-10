@@ -19,6 +19,7 @@ import com.streamsets.pipeline.api.ConfigDef;
 import com.streamsets.pipeline.api.ConfigGroups;
 import com.streamsets.pipeline.api.GenerateResourceBundle;
 import com.streamsets.pipeline.api.StageDef;
+import com.streamsets.pipeline.api.ValueChooserModel;
 
 @StageDef(
     version = 1,
@@ -32,6 +33,18 @@ import com.streamsets.pipeline.api.StageDef;
 @GenerateResourceBundle
 public class NeoDTarget extends NeoTarget {
 
+  @ConfigDef(
+    required = false,
+    type = ConfigDef.Type.MODEL,
+    defaultValue = "No",
+    label = "Authentication Type",
+    displayPosition = 10,
+    group = "NEO4J"
+  )
+
+  @ValueChooserModel(AuthenticationValues.class)
+  public String authenticationtype;
+  
   @ConfigDef(
       required = true,
       type = ConfigDef.Type.STRING,
@@ -74,6 +87,12 @@ public class NeoDTarget extends NeoTarget {
 
   /** {@inheritDoc} */
   @Override
+  public String getAuntheticationType() {
+    return authenticationtype;
+  }
+
+  /** {@inheritDoc} */
+  @Override
   public String getURL(){
     return url;
   }
@@ -93,7 +112,7 @@ public class NeoDTarget extends NeoTarget {
   /** {@inheritDoc} */
   @Override
   public String getQuery() {
-    return password;
+    return query;
   }
 
 }

@@ -42,6 +42,7 @@ public abstract class NeoTarget extends BaseTarget {
   /**
    * Gives access to the UI configuration of the stage provided by the {@link NeoDTarget} class.
    */
+  public abstract String getAuntheticationType();
   public abstract String getURL();
   public abstract String getUsername();
   public abstract String getPassword();
