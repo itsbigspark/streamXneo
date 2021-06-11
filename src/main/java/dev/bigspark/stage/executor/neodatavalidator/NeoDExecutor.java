@@ -38,7 +38,7 @@ public class NeoDExecutor extends NeoExecutor {
       defaultValue = "default",
       label = "Sample Config",
       displayPosition = 10,
-      group = "SAMPLE"
+      group = "NEO4J"
   )
   public String config;
 

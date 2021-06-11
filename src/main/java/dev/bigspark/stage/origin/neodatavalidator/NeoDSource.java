@@ -40,7 +40,7 @@ public class NeoDSource extends NeoSource {
       defaultValue = "default",
       label = "Sample Config",
       displayPosition = 10,
-      group = "SAMPLE"
+      group = "NEO4J"
   )
   public String config;
 
