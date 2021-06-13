@@ -108,36 +108,28 @@ public abstract class NeoTarget extends BaseTarget {
     }
 
     // TODO: write the records to your final destination
-    runQuery(record,getURL(),getUsername(),getPassword(),getQuery());
+    try {
+      runQuery(record,getURL(),getUsername(),getPassword(),getQuery());
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
-  private void runQuery(Record record, String url,String username, String password, String query){
-    try {
-      // Connecting
-      Connection con = DriverManager.getConnection(url,username, password);
-      // Querying
-      //String query = "MATCH (ee:Person)-[:KNOWS]-(friends) WHERE ee.name = \"Emil\" RETURN ee, friends";
+
+  private void runQuery(Record record, String url,String username, String password, String query) throws SQLException{
+    // Connecting
+    try (Connection con = DriverManager.getConnection("jdbc:neo4j:bolt://"+url, username, password)) {
 
       try (PreparedStatement stmt = con.prepareStatement(query)) {
-          
-          
-          try (ResultSet rs = stmt.executeQuery()) {
-              ResultSetMetaData rsmd = rs.getMetaData();
-              int columnsNumber = rsmd.getColumnCount();
-              System.out.println( "Column Number : " + columnsNumber);
 
+          try (ResultSet rs = stmt.executeQuery()) {
               while (rs.next()) {
-                  for (int i = 1; i <= columnsNumber; i++) {
-                      String columnValue = rs.getString(i);
-                      System.out.println(columnValue + " " + rsmd.getColumnName(i));
-                  }
+                  System.out.println(rs.getString(1));
               }
           }
       }
-  }
-  catch (SQLException e) {
-      //TODO: handle exception
-      e.printStackTrace();
+  
   }
   }
 }

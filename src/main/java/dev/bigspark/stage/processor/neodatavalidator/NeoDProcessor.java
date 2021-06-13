@@ -55,7 +55,6 @@ public class NeoDProcessor extends NeoProcessor {
     displayPosition = 10,
     group = "DATAPREPROCESSOR"
   )
-
   @ValueChooserModel(BinaryResponseValues.class)
   public String flatten;
 
@@ -63,23 +62,13 @@ public class NeoDProcessor extends NeoProcessor {
    @ConfigDef(
     required = false,
     type = ConfigDef.Type.TEXT,
-    defaultValue = "Enter create query here",
-    label = "Create",
+    defaultValue = "Enter search query here",
+    label = "Search",
     displayPosition = 10,
     group = "CYPHER"
   )
-  public String createquery;
+  public String lookup;
 
-   /** Cypher Config */
-   @ConfigDef(
-    required = false,
-    type = ConfigDef.Type.TEXT,
-    defaultValue = "Enter create query here",
-    label = "Match",
-    displayPosition = 10,
-    group = "CYPHER"
-  )
-  public String matchquery;
 
   /** {@inheritDoc} */
   @Override
@@ -95,14 +84,8 @@ public class NeoDProcessor extends NeoProcessor {
 
    /** {@inheritDoc} */
    @Override
-   public String getCreateQuery() {
-     return createquery;
-   }
-
-   /** {@inheritDoc} */
-   @Override
-   public String getMatchQuery() {
-     return matchquery;
+   public String getLookUpResults() {
+     return lookup;
    }
 
 
