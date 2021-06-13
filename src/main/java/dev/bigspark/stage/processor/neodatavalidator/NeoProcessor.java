@@ -56,12 +56,12 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
   /** {@inheritDoc} */
   @Override
   protected void process(Record record, SingleLaneBatchMaker batchMaker) throws StageException {
-    LOG.info("Input record: {}", record);
+    LOG.info("processorlog:: Input record: {}", record);
     try {
       
       //Remove fields from record
       Record newrecord = applyRemove(record,getRemoveList());
-      LOG.info("Output record: {}", newrecord);
+      LOG.info("processorlog:: output record: {}", newrecord);
       
       batchMaker.addRecord(newrecord);
 

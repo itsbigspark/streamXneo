@@ -15,7 +15,6 @@
  */
 package dev.bigspark.stage.destination.neodatavalidator;
 
-import dev.bigspark.stage.lib.neodatavalidator.Errors;
 
 import com.streamsets.pipeline.api.Batch;
 import com.streamsets.pipeline.api.Record;
@@ -23,6 +22,7 @@ import com.streamsets.pipeline.api.StageException;
 import com.streamsets.pipeline.api.base.BaseTarget;
 import com.streamsets.pipeline.api.base.OnRecordErrorException;
 import com.streamsets.pipeline.api.impl.Utils;
+
 
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +33,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import dev.bigspark.stage.lib.neodatavalidator.Errors;
 
 /**
  * This target is an example and does not actually write to any destination.
@@ -48,6 +53,8 @@ public abstract class NeoTarget extends BaseTarget {
   public abstract String getPassword();
   public abstract String getQuery();
 
+
+  private static final Logger LOG = LoggerFactory.getLogger(NeoTarget.class);
   /** {@inheritDoc} */
   @Override
   protected List<ConfigIssue> init() {
@@ -103,29 +110,40 @@ public abstract class NeoTarget extends BaseTarget {
     // This is a contrived example, normally you may be performing an operation that could throw
     // an exception or produce an error condition. In that case you can throw an OnRecordErrorException
     // to send this record to the error pipeline with some details.
+    LOG.info("targetlog :: process started");
+
     if (!record.has("/someField")) {
       throw new OnRecordErrorException(Errors.ERROR_01, record, "exception detail message.");
     }
 
     // TODO: write the records to your final destination
+
     try {
       runQuery(record,getURL(),getUsername(),getPassword(),getQuery());
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+    } 
+    catch (SQLException e) {
+      LOG.error("targetlog :: "+e.toString(),e);
     }
+    catch(Throwable t){
+      LOG.error("targetlog :: ",t);
+    }
+    
   }
 
 
   private void runQuery(Record record, String url,String username, String password, String query) throws SQLException{
     // Connecting
+    LOG.error("targetlog :: runQuery 1");
     try (Connection con = DriverManager.getConnection("jdbc:neo4j:bolt://"+url, username, password)) {
+      LOG.error("targetlog :: runQuery 2");
 
       try (PreparedStatement stmt = con.prepareStatement(query)) {
+        LOG.error("targetlog :: runQuery 3");
 
           try (ResultSet rs = stmt.executeQuery()) {
               while (rs.next()) {
-                  System.out.println(rs.getString(1));
+                LOG.info("targetlog :: query response: {}", rs.getString(1));
+                 
               }
           }
       }
