@@ -67,7 +67,7 @@ public class NeoDProcessor extends NeoProcessor {
     displayPosition = 10,
     group = "CYPHER"
   )
-  public String lookup;
+  public String query;
 
 
   /** {@inheritDoc} */
@@ -84,8 +84,8 @@ public class NeoDProcessor extends NeoProcessor {
 
    /** {@inheritDoc} */
    @Override
-   public String getLookUpResults() {
-     return lookup;
+   public String getQuery() {
+     return query;
    }
 
 

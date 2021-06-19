@@ -32,7 +32,8 @@ import com.streamsets.pipeline.api.ValueChooserModel;
 @ConfigGroups(value = Groups.class)
 @GenerateResourceBundle
 public class NeoDTarget extends NeoTarget {
-
+  
+  /**Authentication  Type */
   @ConfigDef(
     required = false,
     type = ConfigDef.Type.MODEL,
@@ -41,10 +42,10 @@ public class NeoDTarget extends NeoTarget {
     displayPosition = 10,
     group = "NEO4J"
   )
-
   @ValueChooserModel(AuthenticationValues.class)
   public String authenticationtype;
   
+  /**URL */
   @ConfigDef(
       required = true,
       type = ConfigDef.Type.STRING,
@@ -55,6 +56,7 @@ public class NeoDTarget extends NeoTarget {
   )
   public String url;
 
+  /**Username */
   @ConfigDef(
       required = false,
       type = ConfigDef.Type.STRING,
@@ -65,6 +67,7 @@ public class NeoDTarget extends NeoTarget {
   )
   public String username;
 
+  /**Password */
   @ConfigDef(
     required = false,
     type = ConfigDef.Type.STRING,
@@ -75,6 +78,7 @@ public class NeoDTarget extends NeoTarget {
   )
   public String password;
 
+   /**Query */
   @ConfigDef(
     required = true,
     type = ConfigDef.Type.TEXT,

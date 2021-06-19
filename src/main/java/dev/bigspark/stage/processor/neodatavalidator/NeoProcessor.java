@@ -32,7 +32,7 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
    */
   public abstract ArrayList<String> getRemoveList();
   public abstract String getFlatten();
-  public abstract String getLookUpResults();
+  public abstract String getQuery();
 
 
   /** {@inheritDoc} */
@@ -96,6 +96,8 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
   /**Process Quer Command */
   public void processQuery(String query){
     String[] queryparts = query.split(",");
+    
   }
 
+  
 }
