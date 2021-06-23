@@ -69,7 +69,6 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     LOG.info("targetlog :: init");
     try {
       driver = GraphDatabase.driver(getURL(),AuthTokens.basic(getUsername(),getPassword()));
-      Session session = driver.session(); 
     } catch (Exception e) {
       LOG.error("targetlog :: init error =>",e);
     }
@@ -144,7 +143,7 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     
     // Writes records to final destination
     try {
-      //runQuery2(getQuery());
+      runQuery2(getQuery());
     } 
     catch(Throwable t){
       LOG.error("targetlog :: writeRecord error => ",t);
@@ -218,8 +217,6 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
         }
       }
   }
-
-  
 
   private void processQuery(){
     String query = "name = 3,age = Jame,amount >= 50";

@@ -1,4 +1,4 @@
-# StreamsetsXNeo4j Stages
+# StreamsetsXNeo4j
 StreamsetsXNeo4j consists of custom stages to build a pipeline using Neo4j.
 
 ### Getting started
@@ -12,7 +12,7 @@ STREAMSETS_HOME='path_to_streamsets/bin:'
 export PATH=$STREAMSETS_HOME$PATH
 ```
 4. Install [Neo4j](https://neo4j.com/download/)
-5. Install Java [Neo4j](https://neo4j.com/download/)
+5. Install [Java](https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html)
 6. Install [Maven](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html)
 
 ### Add custom stages to streamsets
@@ -21,7 +21,6 @@ export PATH=$STREAMSETS_HOME$PATH
 3. Run streamsets launch commmand in terminal
 ```
 streamsets dc
-
 ```
 
 
