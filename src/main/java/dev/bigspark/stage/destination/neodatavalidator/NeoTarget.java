@@ -57,6 +57,7 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
   public abstract String getURL();
   public abstract String getUsername();
   public abstract String getPassword();
+  public abstract String getValues();
   public abstract String getQuery();
 
   private Driver driver;
@@ -140,33 +141,27 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     LOG.info("targetlog :: Password => {} ",getPassword());
     LOG.info("targetlog :: URL => {} ",getURL());
     LOG.info("targetlog :: Query => {} ",getQuery());
+    LOG.info("targetlog :: Values => {} ",getValues());
     
     // Writes records to final destination
     try {
-      runQuery2(getQuery());
+      runQuery2(getValues(),getQuery());
     } 
     catch(Throwable t){
       LOG.error("targetlog :: writeRecord error => ",t);
     }
   }
 
-  private void runQuery2(String query){
+  private void runQuery2(String values, String query){
     LOG.info("targetlog :: runQuery2 started");
-    Map<String,Object> params = new HashMap<>();
-    params.put("name", "Maison");
-    params.put("location", "London");
-    params.put("country", "UK" );
+    Map<String,Object> params = processValues(values);
 
     try{
       Session session = driver.session(); 
-      String greeting = session.writeTransaction( new TransactionWork<String>(){
-        @Override
-        public String execute( Transaction tx ){
-          Result result = tx.run(getQuery(), params);
-          return result.single().get(0).asString();
-        }
+        session.writeTransaction( tx -> {
+          tx.run(query,params);
+          return 1;
       } );
-            System.out.println(greeting);
     }       
     catch (Exception e) {
         e.printStackTrace();
@@ -174,6 +169,20 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
       }
 
   }
+  private static Map<String,Object> processValues(String values){
+    Map<String,Object> params = new HashMap<>();
+    values = values.replaceAll("\\s+","");
+    String[] valuesparts = values.split(",");
+     for (String value : valuesparts) {
+      String[] valuepartssub = value.split("=");
+
+      params.put(valuepartssub[0], valuepartssub[1]);
+      System.out.println("valuepartssub[0] : " + valuepartssub[0]);
+      System.out.println("valuepartssub[1] : " + valuepartssub[1]);
+     }
+     return params;
+}
+
   private void runQuery(String query){
     {
       try ( Session session = driver.session() )
@@ -217,21 +226,5 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
         }
       }
   }
-
-  private void processQuery(){
-    String query = "name = 3,age = Jame,amount >= 50";
-    String[] queryparts = query.split(",");
-    for (int i = 0;i< queryparts.length;i++){
-      System.out.println("queryparts[i] : " + queryparts[i]);
-      System.out.println();
-      
-      String[] queryparts_temp = queryparts[i].split("\\s+");
-      
-      for (String string : queryparts_temp) {
-          System.out.println("queryparts[j] : " + string);
-      }
-    }
-  }
-
   
 }

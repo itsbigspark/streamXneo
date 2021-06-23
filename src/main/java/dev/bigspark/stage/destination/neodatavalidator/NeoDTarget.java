@@ -15,6 +15,8 @@
  */
 package dev.bigspark.stage.destination.neodatavalidator;
 
+import java.util.Map;
+
 import com.streamsets.pipeline.api.ConfigDef;
 import com.streamsets.pipeline.api.ConfigGroups;
 import com.streamsets.pipeline.api.GenerateResourceBundle;
@@ -79,6 +81,18 @@ public class NeoDTarget extends NeoTarget {
   public String password;
 
    /**Query */
+   @ConfigDef(
+    required = true,
+    type = ConfigDef.Type.STRING,
+    defaultValue = "",
+    label = "Values",
+    displayPosition = 10,
+    group = "NEO4J"
+  )
+  public String values;
+
+
+   /**Query */
   @ConfigDef(
     required = true,
     type = ConfigDef.Type.TEXT,
@@ -111,6 +125,12 @@ public class NeoDTarget extends NeoTarget {
   @Override
   public String getPassword() {
     return password;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public String getValues() {
+    return values;
   }
 
   /** {@inheritDoc} */
