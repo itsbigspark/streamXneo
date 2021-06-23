@@ -49,7 +49,7 @@ public class NeoDTarget extends NeoTarget {
   @ConfigDef(
       required = true,
       type = ConfigDef.Type.STRING,
-      defaultValue = "",
+      defaultValue = " ",
       label = "URL",
       displayPosition = 10,
       group = "NEO4J"
@@ -60,7 +60,7 @@ public class NeoDTarget extends NeoTarget {
   @ConfigDef(
       required = false,
       type = ConfigDef.Type.STRING,
-      defaultValue = "",
+      defaultValue = " ",
       label = "Username",
       displayPosition = 10,
       group = "NEO4J"
@@ -71,7 +71,7 @@ public class NeoDTarget extends NeoTarget {
   @ConfigDef(
     required = false,
     type = ConfigDef.Type.STRING,
-    defaultValue = "",
+    defaultValue = " ",
     label = "Password",
     displayPosition = 10,
     group = "NEO4J"

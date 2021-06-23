@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2017 StreamSets Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +59,6 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
   public abstract String getPassword();
   public abstract String getQuery();
 
-
   private Driver driver;
 
   /** {@inheritDoc} */
@@ -66,11 +67,11 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     // Validate configuration values and open any required resources.
     List<ConfigIssue> issues = super.init();
     LOG.info("targetlog :: init");
-   
     try {
-      driver = GraphDatabase.driver(getURL(), AuthTokens.basic( getUsername(), getPassword()));
+      driver = GraphDatabase.driver(getURL(),AuthTokens.basic(getUsername(),getPassword()));
+      Session session = driver.session(); 
     } catch (Exception e) {
-      LOG.error("targetlog :: init",e);
+      LOG.error("targetlog :: init error =>",e);
     }
     
     return issues;
@@ -135,20 +136,63 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     // to send this record to the error pipeline with some details.
 
     LOG.info("targetlog :: write record process started");
-    LOG.info("targetlog:: Input record: {}", record);
-    LOG.info("targetlog :: Username {} ",getUsername());
-    LOG.info("targetlog :: Password {} ",getPassword());
-    LOG.info("targetlog :: URL {} ",getURL());
-    LOG.info("targetlog :: Query {} ",getQuery());
+    LOG.info("targetlog:: Input record => {}", record);
+    LOG.info("targetlog :: Username => {} ",getUsername());
+    LOG.info("targetlog :: Password => {} ",getPassword());
+    LOG.info("targetlog :: URL => {} ",getURL());
+    LOG.info("targetlog :: Query => {} ",getQuery());
     
-    // TODO: write the records to your final destination
+    // Writes records to final destination
     try {
-      runQuery(getQuery());
+      //runQuery2(getQuery());
     } 
     catch(Throwable t){
-      LOG.error("targetlog :: ",t);
+      LOG.error("targetlog :: writeRecord error => ",t);
     }
   }
+
+  private void runQuery2(String query){
+    LOG.info("targetlog :: runQuery2 started");
+    Map<String,Object> params = new HashMap<>();
+    params.put("name", "Maison");
+    params.put("location", "London");
+    params.put("country", "UK" );
+
+    try{
+      Session session = driver.session(); 
+      String greeting = session.writeTransaction( new TransactionWork<String>(){
+        @Override
+        public String execute( Transaction tx ){
+          Result result = tx.run(getQuery(), params);
+          return result.single().get(0).asString();
+        }
+      } );
+            System.out.println(greeting);
+    }       
+    catch (Exception e) {
+        e.printStackTrace();
+        LOG.error("targetlog :: runQuery2 error => ",e);
+      }
+
+  }
+  private void runQuery(String query){
+    {
+      try ( Session session = driver.session() )
+      {
+          String greeting = session.writeTransaction(new TransactionWork<String>()
+          {
+              @Override
+              public String execute( Transaction tx )
+              {
+                  Result result = tx.run(query);
+                  return result.single().get( 0 ).asString();
+              }
+          } );
+          LOG.info("targetlog :: greeting {} ",greeting);
+      }
+    }
+  }
+  
 
   private void runQuery(Record record, String url,String username, String password, String query) throws SQLException{
     //CREATE (ee:Person { name: \"Emil\", from: \"Sweden\", klout: 99 })
@@ -167,7 +211,7 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                  LOG.info("targetlog :: query response: {}", rs.getString(1));
+                  LOG.info("targetlog :: query response => {}", rs.getString(1));
                    
                 }
             }
@@ -175,23 +219,6 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
       }
   }
 
-  private void runQuery(String query){
-    {
-      try ( Session session = driver.session() )
-      {
-          String greeting = session.writeTransaction(new TransactionWork<String>()
-          {
-              @Override
-              public String execute( Transaction tx )
-              {
-                  Result result = tx.run(query);
-                  return result.single().get( 0 ).asString();
-              }
-          } );
-          LOG.info("targetlog :: greeting {} ",greeting);
-      }
-    }
-  }
   
 
   private void processQuery(){
