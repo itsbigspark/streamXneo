@@ -20,8 +20,7 @@ import com.streamsets.pipeline.api.Label;
 
 @GenerateResourceBundle
 public enum Groups implements Label {
-  DATAPREPROCESSOR("Data Preprocessor"),
-  CYPHER("Cypher")
+  DATAPREPROCESSOR("Data Preprocessor")
   ;
 
   private final String label;

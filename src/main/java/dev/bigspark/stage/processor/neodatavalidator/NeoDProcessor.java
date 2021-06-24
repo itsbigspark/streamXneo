@@ -22,7 +22,6 @@ import com.streamsets.pipeline.api.ConfigGroups;
 import com.streamsets.pipeline.api.FieldSelectorModel;
 import com.streamsets.pipeline.api.GenerateResourceBundle;
 import com.streamsets.pipeline.api.StageDef;
-import com.streamsets.pipeline.api.ValueChooserModel;
 
 @StageDef(
     version = 1,
@@ -47,17 +46,6 @@ public class NeoDProcessor extends NeoProcessor {
   @FieldSelectorModel(singleValued = false)
   public ArrayList<String> removelist;
 
-  @ConfigDef(
-    required = false,
-    type = ConfigDef.Type.MODEL,
-    defaultValue = "No",
-    label = "Flatten",
-    displayPosition = 10,
-    group = "DATAPREPROCESSOR"
-  )
-  @ValueChooserModel(BinaryResponseValues.class)
-  public String flatten;
-
   /** Cypher Config */
    @ConfigDef(
     required = false,
@@ -65,7 +53,7 @@ public class NeoDProcessor extends NeoProcessor {
     defaultValue = "Enter search query here",
     label = "Search",
     displayPosition = 10,
-    group = "CYPHER"
+    group = "DATAPREPROCESSOR"
   )
   public String query;
 
@@ -75,12 +63,6 @@ public class NeoDProcessor extends NeoProcessor {
   public ArrayList<String> getRemoveList() {
     return removelist;
   }
-
-  /** {@inheritDoc} */
-   @Override
-   public String getFlatten() {
-     return flatten;
-   }
 
    /** {@inheritDoc} */
    @Override

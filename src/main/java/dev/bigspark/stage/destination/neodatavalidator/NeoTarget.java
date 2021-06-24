@@ -20,14 +20,8 @@ import com.streamsets.pipeline.api.Record;
 import com.streamsets.pipeline.api.StageException;
 import com.streamsets.pipeline.api.base.BaseTarget;
 import com.streamsets.pipeline.api.base.OnRecordErrorException;
-import com.streamsets.pipeline.api.ext.RecordReader;
 import com.streamsets.pipeline.api.impl.Utils;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.HashMap;
@@ -42,12 +36,7 @@ import dev.bigspark.stage.lib.neodatavalidator.Errors;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
-import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
-import org.neo4j.driver.Transaction;
-import org.neo4j.driver.TransactionWork;
-
-import static org.neo4j.driver.Values.parameters;
 
 public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
 
@@ -59,17 +48,16 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
   public abstract String getURL();
   public abstract String getUsername();
   public abstract String getPassword();
-  public abstract String getValues();
-  public abstract String getQuery();
 
   private Driver driver;
 
   /** {@inheritDoc} */
   @Override
   protected List<ConfigIssue> init() {
+    LOG.info("targetlog :: init started");
     // Validate configuration values and open any required resources.
     List<ConfigIssue> issues = super.init();
-    LOG.info("targetlog :: init");
+    
     try {
       driver = GraphDatabase.driver(getURL(),AuthTokens.basic(getUsername(),getPassword()));
     } catch (Exception e) {
@@ -82,7 +70,8 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
   @Override
     public void close() throws Exception
     {
-        driver.close();
+      LOG.info("targetlog :: connection closed");
+      driver.close();
     }
 
   /** {@inheritDoc} */
@@ -96,19 +85,15 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
   /** {@inheritDoc} */
   @Override
   public void write(Batch batch) throws StageException {
-    LOG.info("targetlog :: write batch 1");
     Iterator<Record> batchIterator = batch.getRecords();
 
     while (batchIterator.hasNext()) {
-      LOG.info("targetlog :: write batch 2");
       Record record = batchIterator.next();
       try {
-        LOG.info("targetlog :: write batch 3");
         //Call function to write record
         writeRecord(record);
       } 
       catch (Exception e) {
-        LOG.info("targetlog :: write batch 4");
         switch (getContext().getOnErrorRecord()) {
           case DISCARD:
             break;
@@ -137,70 +122,53 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     // an exception or produce an error condition. In that case you can throw an OnRecordErrorException
     // to send this record to the error pipeline with some details.
 
-    LOG.info("targetlog :: write record process started");
-    LOG.info("targetlog:: Input record => {}", record);
+    LOG.info("targetlog :: writeRecord started");
+    LOG.info("targetlog::  Input record => {}", record);
     LOG.info("targetlog :: Username => {} ",getUsername());
     LOG.info("targetlog :: Password => {} ",getPassword());
     LOG.info("targetlog :: URL => {} ",getURL());
-    LOG.info("targetlog :: Query => {} ",getQuery());
-    LOG.info("targetlog :: Values => {} ",getValues());
     
-
+    try {
+    //Return all fields in record
     Set<String> fields = record.getEscapedFieldPaths();
-    LOG.info("targetlog :: Fields => {} ",fields);
-    
-    Boolean field_exits = fields.removeIf(x -> (x ==""));
-    LOG.info("targetlog :: field exits => {} ",field_exits);
-    LOG.info("targetlog :: Fields edited => {} ",fields);
+  
+    //Remove first item in set which is empty
+    fields.removeIf(x -> (x ==""));
 
     String value = "";
     String query = "CREATE (a:Record {";
     Map<String,Object> params = new HashMap<>();
-    try {
+
+   
       for (String field : fields) {
-        LOG.info("targetlog :: Field => {} ",field);
+
+        //Remove backslash from field name 
         field = field.replaceAll("/","");
+
+        //Get value from record using field name
         value = record.get("/" + field).getValueAsString();
 
-        LOG.info("targetlog :: Field edited => {} ",field);
-        LOG.info("targetlog :: Value => {} ",value);
-
+        //Attach new field and value to existing query
         query  = query + field + ": $" + field + " ,";
+
+        //Add field and value to params to write to destination
         params.put(field, value);
     } 
     // remove last string and close query bracket
     query  = query.substring(0, query.length() - 1) + "})";
-    
-    LOG.info("targetlog :: final query => {} ",query);
 
+    //Writes record to Neo4j destination provided
+    writeRecordToDestination(query,params);
 
-    runQuery3(query,params);
     } 
     catch(Throwable t){
       LOG.error("targetlog :: writeRecord error => ",t);
     }
   }
+  /** Write record to Neo4j destination provided */
+  private void writeRecordToDestination(String query, Map<String,Object> params){
 
-  private void runQuery3(String query, Map<String,Object> params){
-    LOG.info("targetlog :: runQuery3 started");
-
-    try{
-      Session session = driver.session(); 
-        session.writeTransaction( tx -> {
-          tx.run(query,params);
-          return 1;
-      } );
-    }       
-    catch (Exception e) {
-        e.printStackTrace();
-        LOG.error("targetlog :: runQuery3 error => ",e);
-      }
-
-  }
-
-  private void runQuery2(String values, String query){
-    LOG.info("targetlog :: runQuery2 started");
-    Map<String,Object> params = processValues(values);
+    LOG.info("targetlog :: writeRecordToDestination started");
 
     try{
       Session session = driver.session(); 
@@ -211,66 +179,9 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     }       
     catch (Exception e) {
         e.printStackTrace();
-        LOG.error("targetlog :: runQuery2 error => ",e);
+        LOG.error("targetlog :: writeRecordToDestination error => ",e);
       }
 
   }
-  private static Map<String,Object> processValues(String values){
-    Map<String,Object> params = new HashMap<>();
-    values = values.replaceAll("\\s+","");
-    String[] valuesparts = values.split(",");
-     for (String value : valuesparts) {
-      String[] valuepartssub = value.split("=");
-
-      params.put(valuepartssub[0], valuepartssub[1]);
-      System.out.println("valuepartssub[0] : " + valuepartssub[0]);
-      System.out.println("valuepartssub[1] : " + valuepartssub[1]);
-     }
-     return params;
-}
-
-  private void runQuery(String query){
-    {
-      try ( Session session = driver.session() )
-      {
-          String greeting = session.writeTransaction(new TransactionWork<String>()
-          {
-              @Override
-              public String execute( Transaction tx )
-              {
-                  Result result = tx.run(query);
-                  return result.single().get( 0 ).asString();
-              }
-          } );
-          LOG.info("targetlog :: greeting {} ",greeting);
-      }
-    }
-  }
-  
-
-  private void runQuery(Record record, String url,String username, String password, String query) throws SQLException{
-    //CREATE (ee:Person { name: \"Emil\", from: \"Sweden\", klout: 99 })
-
-      // Connecting
-      LOG.error("targetlog :: runQuery 1");
-      final String finalurl = "jdbc:neo4j:bolt://"+url;
-
-      LOG.info("targetlog :: Final URL {} ",finalurl);
-
-      try (Connection con = DriverManager.getConnection(finalurl, username, password)) {
-        LOG.error("targetlog :: runQuery 2");
-
-        try (PreparedStatement stmt = con.prepareStatement(query)) {
-          LOG.error("targetlog :: runQuery 3");
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                  LOG.info("targetlog :: query response => {}", rs.getString(1));
-                   
-                }
-            }
-        }
-      }
-  }
-  
+   
 }

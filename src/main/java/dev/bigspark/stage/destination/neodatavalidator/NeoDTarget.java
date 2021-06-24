@@ -80,29 +80,6 @@ public class NeoDTarget extends NeoTarget {
   )
   public String password;
 
-   /**Query */
-   @ConfigDef(
-    required = true,
-    type = ConfigDef.Type.STRING,
-    defaultValue = "",
-    label = "Values",
-    displayPosition = 10,
-    group = "NEO4J"
-  )
-  public String values;
-
-
-   /**Query */
-  @ConfigDef(
-    required = true,
-    type = ConfigDef.Type.TEXT,
-    defaultValue = "",
-    label = "Query",
-    displayPosition = 10,
-    group = "NEO4J"
-  )
-  public String query;
-
   /** {@inheritDoc} */
   @Override
   public String getAuntheticationType() {
@@ -125,18 +102,6 @@ public class NeoDTarget extends NeoTarget {
   @Override
   public String getPassword() {
     return password;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public String getValues() {
-    return values;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public String getQuery() {
-    return query;
   }
 
 }

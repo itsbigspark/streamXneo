@@ -31,16 +31,15 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
    * Gives access to the UI configuration of the stage provided by the {@link SampleDProcessor} class.
    */
   public abstract ArrayList<String> getRemoveList();
-  public abstract String getFlatten();
   public abstract String getQuery();
 
 
   /** {@inheritDoc} */
   @Override
   protected List<ConfigIssue> init() {
+    LOG.info("processorlog :: init started");
     // Validate configuration values and open any required resources.
     List<ConfigIssue> issues = super.init();
-
 
     // If issues is not empty, the UI will inform the user of each configuration issue in the list.
     return issues;
@@ -50,54 +49,41 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
   @Override
   public void destroy() {
     // Clean up any open resources.
+    LOG.info("processorlog :: destroy");
     super.destroy();
   }
 
   /** {@inheritDoc} */
   @Override
   protected void process(Record record, SingleLaneBatchMaker batchMaker) throws StageException {
-    LOG.info("processorlog:: Input record: {}", record);
+    LOG.info("processorlog :: process started");
+    LOG.info("processorlog :: Input record: {}", record);
     try {
-      
       //Remove fields from record
       Record newrecord = applyRemove(record,getRemoveList());
-      LOG.info("processorlog:: output record: {}", newrecord);
+      LOG.info("processorlog :: output record: {}", newrecord);
       
       batchMaker.addRecord(newrecord);
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("processorlog :: process error => ",e);
+      
     }
     
   }
 
   /** Remove field */
   public Record applyRemove(Record record,ArrayList<String> removelist){
-
-    for (String field : removelist) {
-      record.delete(field);
+    LOG.info("processorlog :: applyRemove started");
+    try {
+      for (String field : removelist) {
+        record.delete(field);
+      }
+    } catch (Exception e) {
+      LOG.error("processorlog :: applyRemove error => ",e);
     }
-
     return record;
     
   }
-
  
-  /** Flatten nested JSON data */
-  public void applyFlatten(Record record){
-
-  }
-
-  /** Run Cypher query */
-  public void runQuery(Record record,String query){
-    
-  }
-
-  /**Process Quer Command */
-  public void processQuery(String query){
-    String[] queryparts = query.split(",");
-    
-  }
-
-  
 }
