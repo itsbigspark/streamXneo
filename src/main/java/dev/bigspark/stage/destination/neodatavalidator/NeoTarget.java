@@ -20,6 +20,7 @@ import com.streamsets.pipeline.api.Record;
 import com.streamsets.pipeline.api.StageException;
 import com.streamsets.pipeline.api.base.BaseTarget;
 import com.streamsets.pipeline.api.base.OnRecordErrorException;
+import com.streamsets.pipeline.api.ext.RecordReader;
 import com.streamsets.pipeline.api.impl.Utils;
 
 import java.sql.Connection;
@@ -31,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,13 +145,57 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     LOG.info("targetlog :: Query => {} ",getQuery());
     LOG.info("targetlog :: Values => {} ",getValues());
     
-    // Writes records to final destination
+
+    Set<String> fields = record.getEscapedFieldPaths();
+    LOG.info("targetlog :: Fields => {} ",fields);
+    
+    Boolean field_exits = fields.removeIf(x -> (x ==""));
+    LOG.info("targetlog :: field exits => {} ",field_exits);
+    LOG.info("targetlog :: Fields edited => {} ",fields);
+
+    String value = "";
+    String query = "CREATE (a:Record {";
+    Map<String,Object> params = new HashMap<>();
     try {
-      runQuery2(getValues(),getQuery());
+      for (String field : fields) {
+        LOG.info("targetlog :: Field => {} ",field);
+        field = field.replaceAll("/","");
+        value = record.get("/" + field).getValueAsString();
+
+        LOG.info("targetlog :: Field edited => {} ",field);
+        LOG.info("targetlog :: Value => {} ",value);
+
+        query  = query + field + ": $" + field + " ,";
+        params.put(field, value);
+    } 
+    // remove last string and close query bracket
+    query  = query.substring(0, query.length() - 1) + "})";
+    
+    LOG.info("targetlog :: final query => {} ",query);
+
+
+    runQuery3(query,params);
     } 
     catch(Throwable t){
       LOG.error("targetlog :: writeRecord error => ",t);
     }
+  }
+
+  private void runQuery3(String query, Map<String,Object> params){
+    LOG.info("targetlog :: runQuery3 started");
+
+    try{
+      Session session = driver.session(); 
+        session.writeTransaction( tx -> {
+          tx.run(query,params);
+          return 1;
+      } );
+    }       
+    catch (Exception e) {
+        e.printStackTrace();
+        LOG.error("targetlog :: runQuery3 error => ",e);
+      }
+
   }
 
   private void runQuery2(String values, String query){
