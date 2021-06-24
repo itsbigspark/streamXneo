@@ -149,7 +149,7 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
         value = record.get("/" + field).getValueAsString();
 
         //Attach new field and value to existing query
-        query  = query + field + ": $" + field + " ,";
+        query  += field + ": $" + field + " ,";
 
         //Add field and value to params to write to destination
         params.put(field, value);
