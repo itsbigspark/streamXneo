@@ -16,9 +16,12 @@ export PATH=$STREAMSETS_HOME$PATH
 6. Install [Maven](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html)
 
 ### Add custom stages to streamsets
-1. Build project using mvn clean package -DskipTests 
-2. Decompress tar file and store contents in path_to_streamsets/user-libs/
-3. Run streamsets launch commmand in terminal
+1. Build project using 
+
+```
+mvn clean package -DskipTests -DtargetDir=/path_to_streamsets/streamsets-datacollector-3.22.3/user-libs
+```
+2. Run streamsets launch commmand in terminal
 ```
 streamsets dc
 ```
