@@ -37,7 +37,7 @@
     <dependency>
       <groupId>com.streamsets</groupId>
       <artifactId>streamsets-datacollector-api</artifactId>
-      <version>3.22.1</version>
+      <version>${streamsets.version}</version>
       <scope>provided</scope>
     </dependency>
    <dependency>
@@ -120,9 +120,12 @@
               <appendAssemblyId>false</appendAssemblyId>
               <attach>false</attach>
               <finalName>${project.artifactId}-${project.version}</finalName>
-              <descriptors>
-                <descriptor>src/main/assemblies/stage-lib.xml</descriptor>
-              </descriptors>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <outputDirectory>
+                ${targetDir}/${project.artifactId}/lib
+              </outputDirectory>
             </configuration>
           </execution>
         </executions>
