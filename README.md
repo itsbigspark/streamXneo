@@ -1,7 +1,7 @@
 # StreamsetsXNeo4j
 StreamsetsXNeo4j consists of custom stages to build a pipeline using Neo4j.
 
-### Getting started
+### Getting started (Local Installation)
 
 1. Clone project
 2. Install [Streamsets](https://streamsets.com/getting-started/download-install-data-collector/)
@@ -25,5 +25,7 @@ mvn clean package -DskipTests -DtargetDir=/path_to_streamsets/streamsets-datacol
 ```
 streamsets dc
 ```
+### Getting started (Docker Installation)
 
-
+1. Install [docker](https://docs.docker.com/get-docker/)
+2. Follow instructions in DOCKER-README.txt
