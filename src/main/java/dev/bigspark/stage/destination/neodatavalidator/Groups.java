@@ -20,8 +20,9 @@ import com.streamsets.pipeline.api.Label;
 
 @GenerateResourceBundle
 public enum Groups implements Label {
-  NEO4J("Neo4J"),
-  DATAFORMAT("Data Format"),
+  SECURITY("Security"),
+  RUNTIME_PARAMETERS("Runtime Parameters"),
+  ADVANCED_PROPERTIES("Advanced Propeties")
   ;
 
   private final String label;
