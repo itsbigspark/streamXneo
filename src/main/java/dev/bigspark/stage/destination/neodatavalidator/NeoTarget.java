@@ -46,8 +46,17 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
    */
   public abstract String getAuntheticationType();
   public abstract String getURL();
+  public abstract String getDatabase();
   public abstract String getUsername();
   public abstract String getPassword();
+  public abstract String getRelationship();
+  public abstract String getSaveStrategy();
+  public abstract String getProperties();
+  public abstract String getTargetLabels();
+  public abstract String getSaveMode();
+  public abstract String getNodeKeys();
+  public abstract String getRetryTimeout();
+  public abstract String getRetry();
 
   private Driver driver;
 
