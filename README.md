@@ -1,5 +1,5 @@
-# StreamsetsXNeo4j
-StreamsetsXNeo4j consists of custom stages to build a pipeline using Neo4j.
+# StreamXNeo
+StreamXNeo consists of custom stages to build a pipeline using Neo4j.
 
 ### Getting started (Local Installation)
 
