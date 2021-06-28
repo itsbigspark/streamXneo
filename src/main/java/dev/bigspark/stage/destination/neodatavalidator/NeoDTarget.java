@@ -63,8 +63,7 @@ public class NeoDTarget extends NeoTarget {
   //Username 
   @ConfigDef(
       required = true,
-      type = ConfigDef.Type.STRING,
-      defaultValue = " ",
+      type = ConfigDef.Type.CREDENTIAL,
       label = "Username",
       displayPosition = 10,
       group = "SECURITY"
@@ -74,8 +73,7 @@ public class NeoDTarget extends NeoTarget {
   //Password 
   @ConfigDef(
     required = true,
-    type = ConfigDef.Type.STRING,
-    defaultValue = " ",
+    type = ConfigDef.Type.CREDENTIAL,
     label = "Password",
     displayPosition = 10,
     group = "SECURITY"
