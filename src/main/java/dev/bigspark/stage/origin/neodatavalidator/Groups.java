@@ -21,6 +21,7 @@ import com.streamsets.pipeline.api.Label;
 @GenerateResourceBundle
 public enum Groups implements Label {
   NEO4J("Neo4J"),
+  ADVANCED_PROPERTIES("Advanced Propeties")
   ;
 
   private final String label;
