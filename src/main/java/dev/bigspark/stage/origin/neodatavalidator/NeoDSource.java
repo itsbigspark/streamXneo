@@ -44,6 +44,39 @@ public class NeoDSource extends NeoSource {
   )
   public String config;
 
+  //Relationship Source Labels
+  @ConfigDef(
+    required = false,
+    type = ConfigDef.Type.STRING,
+    defaultValue = " ",
+    label = "Source Labels",
+    displayPosition = 10,
+    group = "ADVANCED_PROPERTIES"
+  )
+  public String relationship_source_labels;
+
+  //Relationship Save Mode
+  @ConfigDef(
+    required = false,
+    type = ConfigDef.Type.STRING,
+    defaultValue = " ",
+    label = "Source Save Mode",
+    displayPosition = 10,
+    group = "ADVANCED_PROPERTIES"
+  )
+  public String relationship_source_save_mode;
+
+  //Relationship Source Node Keys
+  @ConfigDef(
+    required = false,
+    type = ConfigDef.Type.STRING,
+    defaultValue = " ",
+    label = "Source Node Keys",
+    displayPosition = 10,
+    group = "ADVANCED_PROPERTIES"
+  )
+  public String relationship_source_node_keys;
+
   /** {@inheritDoc} */
   @Override
   public String getConfig() {
