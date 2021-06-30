@@ -15,37 +15,60 @@
  */
 package dev.bigspark.stage.processor.neodatavalidator;
 
+import java.util.ArrayList;
+
 import com.streamsets.pipeline.api.ConfigDef;
 import com.streamsets.pipeline.api.ConfigGroups;
+import com.streamsets.pipeline.api.FieldSelectorModel;
 import com.streamsets.pipeline.api.GenerateResourceBundle;
 import com.streamsets.pipeline.api.StageDef;
 
 @StageDef(
     version = 1,
-    label = "NeoProcessor",
-    description = "",
-    icon = "default.png",
+    label = "Neo4j Processor",
+    description = "Custom Processor for Neo4j",
+    icon = "neo4j-icon.png",
     onlineHelpRefUrl = ""
     
 )
 @ConfigGroups(Groups.class)
 @GenerateResourceBundle
 public class NeoDProcessor extends NeoProcessor {
-
+  
+  /** Data Preprocessor Config */
   @ConfigDef(
-      required = true,
-      type = ConfigDef.Type.STRING,
-      defaultValue = "default",
-      label = "Config",
-      displayPosition = 10,
-      group = "NEODATAVALIDATOR"
+    required = false,
+    type = ConfigDef.Type.MODEL,
+    label = "Remove",
+    displayPosition = 10,
+    group = "DATAPREPROCESSOR"
   )
-  public String config;
+  @FieldSelectorModel(singleValued = false)
+  public ArrayList<String> removelist;
+
+  /** Cypher Config */
+   @ConfigDef(
+    required = false,
+    type = ConfigDef.Type.TEXT,
+    defaultValue = "Enter search query here",
+    label = "Search",
+    displayPosition = 10,
+    group = "DATAPREPROCESSOR"
+  )
+  public String query;
+
 
   /** {@inheritDoc} */
   @Override
-  public String getConfig() {
-    return config;
+  public ArrayList<String> getRemoveList() {
+    return removelist;
   }
+
+   /** {@inheritDoc} */
+   @Override
+   public String getQuery() {
+     return query;
+   }
+
 
 }

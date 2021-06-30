@@ -45,7 +45,7 @@ public abstract class NeoSource extends BaseSource {
     if (getConfig().equals("invalidValue")) {
       issues.add(
           getContext().createConfigIssue(
-            Groups.NEODATAVALIDATOR.name(), "config", Errors.ERROR_00, "Here's what's wrong..."
+            Groups.NEO4J.name(), "config", Errors.ERROR_00, "Here's what's wrong..."
           )
       );
     }

@@ -13,26 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.bigspark.stage.origin.neodatavalidator;
+package dev.bigspark.stage.destination.neodatavalidator;
 
 import com.streamsets.pipeline.api.GenerateResourceBundle;
-import com.streamsets.pipeline.api.Label;
+import com.streamsets.pipeline.api.base.BaseEnumChooserValues;
 
 @GenerateResourceBundle
-public enum Groups implements Label {
-  NEO4J("Neo4J"),
-  ADVANCED_PROPERTIES("Advanced Propeties")
-  ;
-
-  private final String label;
-
-  private Groups(String label) {
-    this.label = label;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public String getLabel() {
-    return this.label;
+public class AuthenticationValues extends BaseEnumChooserValues {
+  public AuthenticationValues(){
+      super(Authentication.class);
   }
 }
+

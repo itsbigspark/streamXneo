@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.bigspark.stage.origin.neodatavalidator;
+package dev.bigspark.stage.destination.neodatavalidator;
 
 import com.streamsets.pipeline.api.GenerateResourceBundle;
 import com.streamsets.pipeline.api.Label;
 
 @GenerateResourceBundle
-public enum Groups implements Label {
-  NEO4J("Neo4J"),
-  ADVANCED_PROPERTIES("Advanced Propeties")
+public enum Authentication implements Label {
+  NEO4JKEYS("Neo4j Keys"),
+  NONE("None"),
+  
   ;
 
   private final String label;
 
-  private Groups(String label) {
+  private Authentication(String label) {
     this.label = label;
   }
 

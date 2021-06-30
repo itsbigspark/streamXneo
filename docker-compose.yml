@@ -1,0 +1,32 @@
+---
+version: '3.9'
+services:
+  streamsets-dc:
+    image: streamsets/datacollector:3.20.0
+    ports:
+      - "18630:18630"
+    volumes:
+      - sdc-data:/data
+      - sdc-stagelibs:/opt/streamsets-datacollector-3.20.0/streamsets-libs
+  neo4j:
+    image: neo4j:latest
+    platform: linux/x86_64
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo-data:/data
+      - neo-logs:/logs
+    environment:
+      - NEO4J_AUTH=neo4j/test
+volumes:
+  sdc-data:
+    external: true
+  sdc-stagelibs:
+    external: true
+  neo-data:
+    external: true
+  neo-logs:
+    external: true
+
+

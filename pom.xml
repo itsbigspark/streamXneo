@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>dev.bigspark</groupId>
   <artifactId>streamsetsneo4jprocessor</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
 
   <properties>
     <streamsets.version>3.22.1</streamsets.version>
@@ -30,14 +30,25 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <!-- Start Dependencies-->
   <dependencies>
     <!-- Core StreamSets Dependencies for Stage Libraries -->
     <!-- Need to be without snapshot at any the point of the release -->
     <dependency>
       <groupId>com.streamsets</groupId>
       <artifactId>streamsets-datacollector-api</artifactId>
-      <version>3.22.1</version>
+      <version>${streamsets.version}</version>
       <scope>provided</scope>
+    </dependency>
+   <dependency>
+      <groupId>org.neo4j</groupId>
+      <artifactId>neo4j-jdbc-driver</artifactId>
+      <version>4.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.neo4j.driver</groupId>
+      <artifactId>neo4j-java-driver</artifactId>
+      <version>4.3.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -52,14 +63,24 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-    <groupId>org.json</groupId>
-    <artifactId>json</artifactId>
-    <version>20210307</version>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20210307</version>
     </dependency>
-    <!-- end -->
-
-    <!-- Test Dependencies -->
     <dependency>
+      <groupId>com.github.everit-org.json-schema</groupId>
+      <artifactId>org.everit.json.schema</artifactId>
+      <version>1.12.2</version>
+    </dependency>
+    <dependency>
+	    <groupId>com.github.wnameless</groupId>
+	    <artifactId>json-flattener</artifactId>
+	    <version>0.2.2</version>
+    </dependency>
+  <!-- End Dependencies-->
+
+  <!-- Test Dependencies -->
+  <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
@@ -72,7 +93,17 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <!-- End Test Dependencies-->
 
+  <!-- Repositories -->
+  <repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+  <!-- End Repositories-->
+  
   <build>
     <plugins>
       <plugin>
@@ -89,9 +120,12 @@
               <appendAssemblyId>false</appendAssemblyId>
               <attach>false</attach>
               <finalName>${project.artifactId}-${project.version}</finalName>
-              <descriptors>
-                <descriptor>src/main/assemblies/stage-lib.xml</descriptor>
-              </descriptors>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <outputDirectory>
+                ${targetDir}/${project.artifactId}/lib
+              </outputDirectory>
             </configuration>
           </execution>
         </executions>

@@ -46,7 +46,7 @@ public abstract class NeoExecutor extends BaseExecutor {
     if (getConfig().equals("invalidValue")) {
       issues.add(
           getContext().createConfigIssue(
-            Groups.NEODATAVALIDATOR.name(), "config", Errors.ERROR_00, "Here's what's wrong..."
+            Groups.NEO4J.name(), "config", Errors.ERROR_00, "Here's what's wrong..."
           )
       );
     }
@@ -76,10 +76,10 @@ public abstract class NeoExecutor extends BaseExecutor {
           case DISCARD:
             break;
           case TO_ERROR:
-            getContext().toError(record, Errors.SAMPLE_01, e.toString());
+            getContext().toError(record, Errors.ERROR_00, e.toString());
             break;
           case STOP_PIPELINE:
-            throw new StageException(Errors.SAMPLE_01, e.toString());
+            throw new StageException(Errors.ERROR_00, e.toString());
           default:
             throw new IllegalStateException(
                 Utils.format("Unknown OnError value '{}'", getContext().getOnErrorRecord(), e)
@@ -100,7 +100,7 @@ public abstract class NeoExecutor extends BaseExecutor {
     // an exception or produce an error condition. In that case you can throw an OnRecordErrorException
     // to send this record to the error pipeline with some details.
     if (!record.has("/someField")) {
-      throw new OnRecordErrorException(Errors.SAMPLE_01, record, "exception detail message.");
+      throw new OnRecordErrorException(Errors.ERROR_00, record, "exception detail message.");
     }
 
     // TODO: execute action

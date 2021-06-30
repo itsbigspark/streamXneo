@@ -15,15 +15,13 @@
  */
 package dev.bigspark.stage.processor.neodatavalidator;
 
-import dev.bigspark.stage.lib.neodatavalidator.Errors;
-
 import com.streamsets.pipeline.api.Record;
 import com.streamsets.pipeline.api.StageException;
 import com.streamsets.pipeline.api.base.SingleLaneRecordProcessor;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,21 +30,16 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
   /**
    * Gives access to the UI configuration of the stage provided by the {@link SampleDProcessor} class.
    */
-  public abstract String getConfig();
+  public abstract ArrayList<String> getRemoveList();
+  public abstract String getQuery();
+
 
   /** {@inheritDoc} */
   @Override
   protected List<ConfigIssue> init() {
+    LOG.info("processorlog :: init started");
     // Validate configuration values and open any required resources.
     List<ConfigIssue> issues = super.init();
-
-    if (getConfig().equals("invalidValue")) {
-      issues.add(
-          getContext().createConfigIssue(
-              Groups.NEODATAVALIDATOR.name(), "config", Errors.ERROR_00, "Here's what's wrong..."
-          )
-      );
-    }
 
     // If issues is not empty, the UI will inform the user of each configuration issue in the list.
     return issues;
@@ -56,18 +49,41 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
   @Override
   public void destroy() {
     // Clean up any open resources.
+    LOG.info("processorlog :: destroy");
     super.destroy();
   }
 
   /** {@inheritDoc} */
   @Override
   protected void process(Record record, SingleLaneBatchMaker batchMaker) throws StageException {
-    // TODO: Implement your record processing here, then add to the output batch.
+    LOG.info("processorlog :: process started");
+    LOG.info("processorlog :: Input record: {}", record);
+    try {
+      //Remove fields from record
+      Record newrecord = applyRemove(record,getRemoveList());
+      LOG.info("processorlog :: output record: {}", newrecord);
+      
+      batchMaker.addRecord(newrecord);
 
-    LOG.info("Input record: {}", record);
-
-    // This example is a no-op
-    batchMaker.addRecord(record);
+    } catch (Exception e) {
+      LOG.error("processorlog :: process error => ",e);
+      
+    }
+    
   }
 
+  /** Remove field */
+  public Record applyRemove(Record record,ArrayList<String> removelist){
+    LOG.info("processorlog :: applyRemove started");
+    try {
+      for (String field : removelist) {
+        record.delete(field);
+      }
+    } catch (Exception e) {
+      LOG.error("processorlog :: applyRemove error => ",e);
+    }
+    return record;
+    
+  }
+ 
 }

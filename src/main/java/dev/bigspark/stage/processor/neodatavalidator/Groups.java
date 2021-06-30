@@ -20,7 +20,7 @@ import com.streamsets.pipeline.api.Label;
 
 @GenerateResourceBundle
 public enum Groups implements Label {
-  NEODATAVALIDATOR("datavalidator"),
+  DATAPREPROCESSOR("Data Preprocessor")
   ;
 
   private final String label;
