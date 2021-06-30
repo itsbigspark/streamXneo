@@ -20,7 +20,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>dev.bigspark</groupId>
-  <artifactId>streamsetsneo4jprocessor</artifactId>
+  <artifactId>streamxneo</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
