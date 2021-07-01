@@ -108,7 +108,7 @@
     <repository>
       <id>github</id>
       <name>GitHub OWNER Apache Maven Packages</name>
-      <url>https://maven.pkg.github.com/itsbigspark/streamsetsneo4jprocessor
+      <url>https://maven.pkg.github.com/itsbigspark/streamXneo
       </url>
     </repository>
   </distributionManagement>
