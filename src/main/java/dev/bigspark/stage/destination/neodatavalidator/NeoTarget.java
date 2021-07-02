@@ -26,7 +26,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,17 +63,33 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
   public abstract String getRetryTimeout();
   public abstract String getRetry();
 
-  private Driver driver;
+  private Driver driver = null;
+  private Connection connection = null;
 
   /** {@inheritDoc} */
   @Override
   protected List<ConfigIssue> init() {
     LOG.info("targetlog :: init started");
+
     // Validate configuration values and open any required resources.
     List<ConfigIssue> issues = super.init();
+    LOG.info("targetlog :: URL => {} ",getURL());
+    LOG.info("targetlog :: Username => {} ",getUsername());
+    LOG.info("targetlog :: Password => {} ",getPassword());
     
     try {
       driver = GraphDatabase.driver(getURL(),AuthTokens.basic(getUsername(),getPassword()));
+      
+      Properties info = new Properties(); 
+      info.put("user", getUsername()); 
+      info.put("password", getPassword());
+
+      info.setProperty("connection.acquisition.timeout","20");
+      info.setProperty("connection.liveness.check.timeout","20");
+      info.setProperty("connection.timeout","321000");
+
+      connection = DriverManager.getConnection(getURL(),info);
+
     } catch (Exception e) {
       LOG.error("targetlog :: init error =>",e);
     }
@@ -133,64 +154,106 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
 
     LOG.info("targetlog :: writeRecord started");
     LOG.info("targetlog::  Input record => {}", record);
-    LOG.info("targetlog :: Username => {} ",getUsername());
-    LOG.info("targetlog :: Password => {} ",getPassword());
-    LOG.info("targetlog :: URL => {} ",getURL());
-    
+
     try {
     //Return all fields in record
     Set<String> fields = record.getEscapedFieldPaths();
-  
-    //Remove first item in set which is empty
-    fields.removeIf(x -> (x ==""));
 
-    String value = "";
-    String query = "CREATE (a:Record {";
-    Map<String,Object> params = new HashMap<>();
+    //Writes record to Neo4j destination using Java Driver
+    writeRecordJavaDriver(record,fields);
 
-   
-      for (String field : fields) {
-
-        //Remove backslash from field name 
-        field = field.replaceAll("/","");
-
-        //Get value from record using field name
-        value = record.get("/" + field).getValueAsString();
-
-        //Attach new field and value to existing query
-        query  += field + ": $" + field + " ,";
-
-        //Add field and value to params to write to destination
-        params.put(field, value);
-    } 
-    // remove last string and close query bracket
-    query  = query.substring(0, query.length() - 1) + "})";
-
-    //Writes record to Neo4j destination provided
-    writeRecordToDestination(query,params);
+    //Writes record to Neo4j destination using JDBC Driver
+    //writeRecordJDBC(record,fields);
 
     } 
     catch(Throwable t){
       LOG.error("targetlog :: writeRecord error => ",t);
     }
   }
-  /** Write record to Neo4j destination provided */
-  private void writeRecordToDestination(String query, Map<String,Object> params){
 
-    LOG.info("targetlog :: writeRecordToDestination started");
+  private void writeRecordJDBC(Record record,Set<String> fields){
+    LOG.info("targetlog :: writeRecordJDBC started");
+    //Remove first item in set which is empty
+    fields.removeIf(x -> (x ==""));
 
-    try{
-      Session session = driver.session(); 
-        session.writeTransaction( tx -> {
-          tx.run(query,params);
-          return 1;
-      } );
-    }       
+    try {
+      
+      String query = "CREATE (a:Record {";
+      Object value = "";
+
+        for (String field : fields) {
+
+          //Remove backslash from field name 
+          field = field.replaceAll("/","");
+
+          //Get value from record using field name
+          value = record.get("/" + field).getValue();
+
+          if(value instanceof String){
+            String valueString = (String) value;
+            query  += field + ": '" + valueString + "' , ";
+          }
+
+          else{
+            Double valueDouble = (Double) value;
+            query  += field + ":" + valueDouble + ", ";
+          }
+          //Attach new field and value to existing query
+          //query  += field + ": " + value + " , ";
+
+        } 
+      // remove last string and close query bracket
+      query  = query.substring(0, query.length() - 1) + "})";
+      LOG.info("targetlog :: writeRecordJDBC final query => {}",query);
+
+
+      PreparedStatement stmt = connection.prepareStatement(query);
+      
+      ResultSet rs = stmt.executeQuery();
+      //Retrieving the ResultSetMetadata object
+
+    } 
     catch (Exception e) {
-        e.printStackTrace();
-        LOG.error("targetlog :: writeRecordToDestination error => ",e);
-      }
+  
+      LOG.error("targetlog :: writeRecordJDBC error => ",e);
+    }
 
+  }
+  /** Write record to Neo4j destination provided */
+  private void writeRecordJavaDriver(Record record,Set<String> fields){
+
+      //Remove first item in set which is empty
+      fields.removeIf(x -> (x ==""));
+
+      String value = "";
+      String  query = "CREATE (a:Record {";
+      Map<String,Object> params = new HashMap<>();
+
+        for (String field : fields) {
+
+          //Remove backslash from field name 
+          field = field.replaceAll("/","");
+
+          //Get value from record using field name
+          value = record.get("/" + field).getValueAsString();
+
+          //Attach new field and value to existing query
+          query  += field + ": $" + field + " ,";
+
+          //Add field and value to params to write to destination
+          params.put(field, value);
+        } 
+      // remove last string and close query bracket
+      query  = query.substring(0, query.length() - 1) + "})";
+
+      final String completequery = query;
+      Session session = driver.session(); 
+
+      session.writeTransaction( tx -> {
+            tx.run(completequery,params);
+            return 1;
+        });
+   
   }
    
 }
