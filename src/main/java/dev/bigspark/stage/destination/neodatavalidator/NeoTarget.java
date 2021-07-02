@@ -24,14 +24,14 @@ import com.streamsets.pipeline.api.impl.Utils;
 
 import java.util.Iterator;
 import java.util.List;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,8 +63,8 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
   public abstract String getRetryTimeout();
   public abstract String getRetry();
 
-  private Driver driver;
-  Connection connection = null;
+  private Driver driver = null;
+  private Connection connection = null;
 
   /** {@inheritDoc} */
   @Override
@@ -73,9 +73,9 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
 
     // Validate configuration values and open any required resources.
     List<ConfigIssue> issues = super.init();
+    LOG.info("targetlog :: URL => {} ",getURL());
     LOG.info("targetlog :: Username => {} ",getUsername());
     LOG.info("targetlog :: Password => {} ",getPassword());
-    LOG.info("targetlog :: URL => {} ",getURL());
     
     try {
       driver = GraphDatabase.driver(getURL(),AuthTokens.basic(getUsername(),getPassword()));
@@ -83,14 +83,15 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
       Properties info = new Properties(); 
       info.put("user", getUsername()); 
       info.put("password", getPassword());
+
       info.setProperty("connection.acquisition.timeout","20");
       info.setProperty("connection.liveness.check.timeout","20");
       info.setProperty("connection.timeout","321000");
 
-      //connection = DriverManager.getConnection(getURL(),info);
+      connection = DriverManager.getConnection(getURL(),info);
 
-    } catch (Throwable throwable) {
-      LOG.error("targetlog :: init error =>",throwable);
+    } catch (Exception e) {
+      LOG.error("targetlog :: init error =>",e);
     }
     
     return issues;
