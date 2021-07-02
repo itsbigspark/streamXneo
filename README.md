@@ -7,6 +7,9 @@ StreamXNeo consists of custom stages to build a pipeline using Neo4j.
 2. Install [Streamsets](https://streamsets.com/getting-started/download-install-data-collector/) : streamsets-datacollector-3.22.3
     - Ensure permissions [logging permissions](https://docs.streamsets.com/portal/#datacollector/latest/help/datacollector/UserGuide/Configuration/CustomStageLibraries.html) are enabled
     - Increase your open file limit
+```
+ulimit -n 32768
+```
 3. Add Streamsets to PATH
 ```
 STREAMSETS_HOME='path_to_streamsets/bin:'
