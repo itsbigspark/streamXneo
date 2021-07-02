@@ -163,7 +163,7 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     writeRecordJavaDriver(record,fields);
 
     //Writes record to Neo4j destination using JDBC Driver
-    //writeRecordJDBC(record,fields);
+    writeRecordJDBC(record,fields);
 
     } 
     catch(Throwable t){
