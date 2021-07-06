@@ -15,13 +15,12 @@
  */
 package dev.bigspark.stage.destination.neodatavalidator;
 
-import java.util.Map;
-
 import com.streamsets.pipeline.api.ConfigDef;
 import com.streamsets.pipeline.api.ConfigGroups;
 import com.streamsets.pipeline.api.GenerateResourceBundle;
 import com.streamsets.pipeline.api.StageDef;
 import com.streamsets.pipeline.api.ValueChooserModel;
+import com.streamsets.pipeline.api.ConfigDef.DisplayMode;
 
 @StageDef(
     version = 1,
@@ -41,10 +40,11 @@ public class NeoDTarget extends NeoTarget {
   @ConfigDef(
     required = true,
     type = ConfigDef.Type.MODEL,
-    defaultValue = "No",
     label = "Authentication Type",
+    defaultValue = "NONE",
     displayPosition = 10,
-    group = "SECURITY"
+    group = "SECURITY",
+    displayMode = DisplayMode.BASIC
   )
   @ValueChooserModel(AuthenticationValues.class)
   public String authenticationtype;
@@ -56,27 +56,34 @@ public class NeoDTarget extends NeoTarget {
       defaultValue = " ",
       label = "URL",
       displayPosition = 10,
-      group = "SECURITY"
+      group = "SECURITY",
+      displayMode = DisplayMode.BASIC
   )
   public String url;
 
   //Username 
   @ConfigDef(
-      required = true,
+      required = false,
       type = ConfigDef.Type.CREDENTIAL,
       label = "Username",
       displayPosition = 10,
-      group = "SECURITY"
+      dependsOn = "authenticationtype",
+      triggeredByValue = "NEO4JKEYS",
+      group = "SECURITY",
+      displayMode = DisplayMode.BASIC
   )
   public String username;
 
   //Password 
   @ConfigDef(
-    required = true,
+    required = false,
     type = ConfigDef.Type.CREDENTIAL,
     label = "Password",
     displayPosition = 10,
-    group = "SECURITY"
+    dependsOn = "authenticationtype",
+    triggeredByValue = "NEO4JKEYS",
+    group = "SECURITY",
+    displayMode = DisplayMode.BASIC
   )
   public String password;
 
@@ -87,7 +94,8 @@ public class NeoDTarget extends NeoTarget {
     defaultValue = " ",
     label = "Database",
     displayPosition = 10,
-    group = "SECURITY"
+    group = "SECURITY",
+    displayMode = DisplayMode.BASIC
   )
   public String database;
 
@@ -100,7 +108,8 @@ public class NeoDTarget extends NeoTarget {
     defaultValue = " ",
     label = "Relationship",
     displayPosition = 10,
-    group = "ADVANCED_PROPERTIES"
+    group = "ADVANCED_PROPERTIES",
+    displayMode = DisplayMode.ADVANCED
   )
   public String relationship;
 
@@ -111,7 +120,8 @@ public class NeoDTarget extends NeoTarget {
   defaultValue = " ",
   label = "Save Strategy",
   displayPosition = 10,
-  group = "ADVANCED_PROPERTIES"
+  group = "ADVANCED_PROPERTIES",
+  displayMode = DisplayMode.ADVANCED
 )
   public String relationship_save_strategy;
 
@@ -122,7 +132,8 @@ public class NeoDTarget extends NeoTarget {
   defaultValue = " ",
   label = "Properties",
   displayPosition = 10,
-  group = "ADVANCED_PROPERTIES"
+  group = "ADVANCED_PROPERTIES",
+  displayMode = DisplayMode.ADVANCED
 )
   public String properties;
 
@@ -134,7 +145,8 @@ public class NeoDTarget extends NeoTarget {
     defaultValue = " ",
     label = "Target Labels",
     displayPosition = 10,
-    group = "ADVANCED_PROPERTIES"
+    group = "ADVANCED_PROPERTIES",
+    displayMode = DisplayMode.ADVANCED
   )
   public String relationship_target_labels;
 
@@ -145,7 +157,8 @@ public class NeoDTarget extends NeoTarget {
     defaultValue = " ",
     label = "Save Strategy Mode",
     displayPosition = 10,
-    group = "ADVANCED_PROPERTIES"
+    group = "ADVANCED_PROPERTIES",
+    displayMode = DisplayMode.ADVANCED
   )
   public String relationship_target_save_mode;
 
@@ -156,7 +169,8 @@ public class NeoDTarget extends NeoTarget {
     defaultValue = " ",
     label = "Source Node Keys",
     displayPosition = 10,
-    group = "ADVANCED_PROPERTIES"
+    group = "ADVANCED_PROPERTIES",
+    displayMode = DisplayMode.ADVANCED
   )
   public String relationship_target_node_keys;
 
@@ -170,7 +184,8 @@ public class NeoDTarget extends NeoTarget {
     defaultValue = " ",
     label = "Retry Timeout",
     displayPosition = 10,
-    group = "RUNTIME_PARAMETERS"
+    group = "RUNTIME_PARAMETERS",
+    displayMode = DisplayMode.ADVANCED
   )
   public String retry_timeout;
 
@@ -181,7 +196,8 @@ public class NeoDTarget extends NeoTarget {
     defaultValue = " ",
     label = "Retry",
     displayPosition = 10,
-    group = "RUNTIME_PARAMETERS"
+    group = "RUNTIME_PARAMETERS",
+    displayMode = DisplayMode.ADVANCED
   )
   public String retry;
 
