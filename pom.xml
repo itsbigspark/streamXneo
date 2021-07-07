@@ -129,9 +129,9 @@
               <appendAssemblyId>false</appendAssemblyId>
               <attach>false</attach>
               <finalName>${project.artifactId}-${project.version}</finalName>
-              <descriptorRefs>
-                <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
+              <descriptors>
+                <descriptor>src/main/assemblies/stage-lib.xml</descriptor>
+              </descriptors>
               <outputDirectory>
                 ${targetDir}/${project.artifactId}/lib
               </outputDirectory>
