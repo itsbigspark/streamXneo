@@ -32,3 +32,7 @@ streamsets dc
 
 1. Install [docker](https://docs.docker.com/get-docker/)
 2. Follow instructions in DOCKER-README.txt
+
+### Using JAR package
+
+To use JAR package download the recent version and rename it streamxneo-1.0-SNAPSHOT.jar
