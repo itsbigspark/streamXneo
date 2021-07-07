@@ -132,9 +132,9 @@
               <descriptors>
                 <descriptor>src/main/assemblies/stage-lib.xml</descriptor>
               </descriptors>
-              <outputDirectory>
+              <!-- <outputDirectory>
                 ${targetDir}/${project.artifactId}/lib
-              </outputDirectory>
+              </outputDirectory> -->
             </configuration>
           </execution>
         </executions>
