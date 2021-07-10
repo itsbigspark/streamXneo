@@ -16,6 +16,7 @@ STREAMSETS_HOME='path_to_streamsets/bin:'
 export PATH=$STREAMSETS_HOME$PATH
 ```
 4. Install [Neo4j](https://neo4j.com/download/) : Version 4.2.1
+   - Login in using the bolt driver    
 5. Install [Maven](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html)
 
 ### Add custom stages to streamsets

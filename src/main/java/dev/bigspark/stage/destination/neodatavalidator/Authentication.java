@@ -21,7 +21,7 @@ import com.streamsets.pipeline.api.Label;
 @GenerateResourceBundle
 public enum Authentication implements Label {
   NONE("None"),
-  NEO4JKEYS("Neo4j Keys"),
+  BASIC("Basic"),
   
   ;
 
