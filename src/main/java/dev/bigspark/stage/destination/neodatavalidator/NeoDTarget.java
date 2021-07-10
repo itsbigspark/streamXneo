@@ -68,7 +68,7 @@ public class NeoDTarget extends NeoTarget {
       label = "Username",
       displayPosition = 10,
       dependsOn = "authenticationtype",
-      triggeredByValue = "NEO4JKEYS",
+      triggeredByValue = "BASIC",
       group = "SECURITY",
       displayMode = DisplayMode.BASIC
   )
@@ -81,7 +81,7 @@ public class NeoDTarget extends NeoTarget {
     label = "Password",
     displayPosition = 10,
     dependsOn = "authenticationtype",
-    triggeredByValue = "NEO4JKEYS",
+    triggeredByValue = "BASIC",
     group = "SECURITY",
     displayMode = DisplayMode.BASIC
   )
