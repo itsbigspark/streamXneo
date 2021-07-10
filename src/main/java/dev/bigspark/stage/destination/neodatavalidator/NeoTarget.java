@@ -88,7 +88,7 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
       info.setProperty("connection.liveness.check.timeout","20");
       info.setProperty("connection.timeout","321000");
 
-      //connection = DriverManager.getConnection(getURL(),info);
+      connection = DriverManager.getConnection("jdbc:neo4j:"+getURL(),info);
 
     } catch (Exception e) {
       LOG.error("targetlog :: init error =>",e);
@@ -160,10 +160,10 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     Set<String> fields = record.getEscapedFieldPaths();
 
     //Writes record to Neo4j destination using Java Driver
-    writeRecordJavaDriver(record,fields);
+    //writeRecordJavaDriver(record,fields);
 
     //Writes record to Neo4j destination using JDBC Driver
-    //writeRecordJDBC(record,fields);
+    writeRecordJDBC(record,fields);
 
     } 
     catch(Throwable t){
@@ -191,7 +191,7 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
 
           if(value instanceof String){
             String valueString = (String) value;
-            query  += field + ": '" + valueString + "' , ";
+            query  += field + ": '" + valueString + "', ";
           }
 
           else{
@@ -202,15 +202,15 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
           //query  += field + ": " + value + " , ";
 
         } 
-      // remove last string and close query bracket
-      query  = query.substring(0, query.length() - 1) + "})";
-      LOG.info("targetlog :: writeRecordJDBC final query => {}",query);
+      LOG.info("targetlog :: writeRecordJDBC last query => {}",query);
 
+      // remove last string and close query bracket
+      query  = query.substring(0, query.length() - 2) + "})";
+      LOG.info("targetlog :: writeRecordJDBC final query => {}",query);
 
       PreparedStatement stmt = connection.prepareStatement(query);
       
       ResultSet rs = stmt.executeQuery();
-      //Retrieving the ResultSetMetadata object
 
     } 
     catch (Exception e) {
