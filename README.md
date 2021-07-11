@@ -38,7 +38,7 @@ docker-compose up
 # Usage 
 ### Local 
 
-1. Ensure that [permissions](https://docs.streamsets.com/portal/#datacollector/latest/help/datacollector/UserGuide/Configuration/CustomStageLibraries.html) for running custom stages in streamsets  are enabled in $SDC_CONF/sdc-security.policy
+1. Ensure that [permissions](https://docs.streamsets.com/portal/#datacollector/latest/help/datacollector/UserGuide/Configuration/CustomStageLibraries.html) for running custom stages in streamsets  are enabled in sdc-security.policy
 ```
 permission java.io.FilePermission "/etc/os-release", "read";
 
