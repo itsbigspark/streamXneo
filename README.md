@@ -2,10 +2,20 @@
 StreamXNeo consists of custom stages to build a pipeline using Neo4j.
 
 # Table of Contents
+* [Installation](#installation)  
+    * [Local Installation](#local-installation)  
+    * [Docker Installation](#docker-installation)  
+* [Usage](#usage) 
+    * [Local](#local)  
+    * [Docker](#docker)  
+* [Contributing](#contributing)  
+* [Credits](#credits) 
+* [License](#License) 
 
+<!-- toc --> 
 # Installation
 
-### Local
+### Local Installation
 1. Download [Streamsets Data Collector](https://streamsets.com/getting-started/download-install-data-collector/) : Version 3.22.3
 
 2. Add Streamsets Data Collector to PATH
@@ -19,7 +29,7 @@ export PATH=$STREAMSETS_HOME$PATH
 4. Install [Maven](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html)
 
 
-### Docker
+### Docker Installation
 1. Create that docker-compose.yml is in project directory
 2. Create named volumes and bind them to your local repository.
 ```
@@ -35,6 +45,7 @@ docker volume create -d local -o o=bind -o type=none -o device="path_to_store_do
 ```
 docker-compose up
 ```
+
 # Usage 
 ### Local 
 
@@ -71,6 +82,7 @@ streamsets dc
 ```
 docker run --rm -v sdc-stagelibs:/opt/streamsets-datacollector-3.20.0/streamsets-libs streamsets/datacollector:3.20.0 stagelibs -install=streamsets-datacollector-aws-lib
 ```
+
 # Contributing
 
 # Credits
