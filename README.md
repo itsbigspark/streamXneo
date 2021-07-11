@@ -45,7 +45,6 @@ permission java.io.FilePermission "/etc/os-release", "read";
 permission java.io.FilePermission "/usr/lib/os-release", "read";
 
 permission java.util.PropertyPermission "*", "read,write";
-
 ```
 
 3. Download the most recent jar from the [assets](https://github.com/itsbigspark/streamXneo/packages/887595) section
@@ -60,7 +59,6 @@ ulimit -n 32768
 6. Start streamsets in terminal
 ```
 streamsets dc
-
 ```
 
 7. Open Streamsets in browser :  http://localhost:18630 
