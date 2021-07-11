@@ -195,8 +195,8 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
           }
 
           else{
-            Double valueDouble = (Double) value;
-            query  += field + ":" + valueDouble + ", ";
+            Integer valueInteger = (Integer) value;
+            query  += field + ":" + valueInteger + ", ";
           }
           //Attach new field and value to existing query
           //query  += field + ": " + value + " , ";
