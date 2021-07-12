@@ -74,8 +74,8 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     // Validate configuration values and open any required resources.
     List<ConfigIssue> issues = super.init();
     LOG.info("targetlog :: URL => {} ",getURL());
-    LOG.info("targetlog :: Username => {} ",getUsername());
-    LOG.info("targetlog :: Password => {} ",getPassword());
+    //LOG.info("targetlog :: Username => {} ",getUsername());
+    //LOG.info("targetlog :: Password => {} ",getPassword());
     
     try {
       driver = GraphDatabase.driver(getURL(),AuthTokens.basic(getUsername(),getPassword()));
@@ -171,6 +171,13 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     }
   }
 
+  /**
+   * Writes a single record to a Neo4j destination using JDBC Driver.
+   *
+   * @param record the record to write to the destination.
+   * @param fields set of fields to be written ot the destination
+   */
+
   private void writeRecordJDBC(Record record,Set<String> fields){
     LOG.info("targetlog :: writeRecordJDBC started");
     //Remove first item in set which is empty
@@ -198,8 +205,6 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
             Integer valueInteger = (Integer) value;
             query  += field + ":" + valueInteger + ", ";
           }
-          //Attach new field and value to existing query
-          //query  += field + ": " + value + " , ";
 
         } 
       LOG.info("targetlog :: writeRecordJDBC last query => {}",query);
@@ -219,7 +224,13 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
     }
 
   }
-  /** Write record to Neo4j destination provided */
+  
+  /**
+   * Writes a single record to a Neo4j destination using Java Driver.
+   *
+   * @param record the record to write to the destination.
+   * @param fields set of fields to be written ot the destination
+   */
   private void writeRecordJavaDriver(Record record,Set<String> fields){
 
       //Remove first item in set which is empty
