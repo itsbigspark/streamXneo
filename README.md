@@ -83,8 +83,12 @@ streamsets dc
 docker run --rm -v sdc-stagelibs:/opt/streamsets-datacollector-3.20.0/streamsets-libs streamsets/datacollector:3.20.0 stagelibs -install=streamsets-datacollector-aws-lib
 ```
 
-# Contributing
+# Demo
+[Insert link to blog]()
 
 # Credits
+### Authors
+* [Raymond Klutse](https://github.com/raymondklutse)
 
 # License
+This project is licensed with the [Apache License 2.0]()
