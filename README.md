@@ -8,7 +8,7 @@ StreamXNeo consists of custom stages to build a pipeline using Neo4j.
 * [Usage](#usage) 
     * [Local](#local)  
     * [Docker](#docker)  
-* [Contributing](#contributing)  
+* [Demo](#demo)  
 * [Credits](#credits) 
 * [License](#License) 
 
