@@ -72,7 +72,12 @@ public abstract class NeoProcessor extends SingleLaneRecordProcessor {
     
   }
 
-  /** Remove field */
+  /**
+   * Removes fields from a given record
+   *
+   * @param record the record to write to the destination.
+   * @param removelist list of records to be removed
+   */
   public Record applyRemove(Record record,ArrayList<String> removelist){
     LOG.info("processorlog :: applyRemove started");
     try {
