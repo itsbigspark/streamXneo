@@ -58,23 +58,23 @@ permission java.io.FilePermission "/usr/lib/os-release", "read";
 permission java.util.PropertyPermission "*", "read,write";
 ```
 
-3. Download the most recent jar from the [assets](https://github.com/itsbigspark/streamXneo/packages/887595) section
+2. Download the most recent jar from the [assets](https://github.com/itsbigspark/streamXneo/packages/887595) section
 
-4. Copy jar file to /path_to_streamsets/user_lib/streamxneo/lib
+3. Copy jar file to /path_to_streamsets/user_lib/streamxneo/lib
 
-5. Increase open file limit 
+4. Increase open file limit 
 ```
 ulimit -n 32768
 ```
 
-6. Start streamsets in terminal
+5. Start streamsets in terminal
 ```
 streamsets dc
 ```
 
-7. Open Streamsets in browser :  http://localhost:18630 
+6. Open Streamsets in browser :  http://localhost:18630 
 
-8. Open Neo4j in browser : http://localhost:7474/ 
+7. Open Neo4j in browser : http://localhost:7474/ 
    - Login in using the bolt driver   
 
 ### Docker 
