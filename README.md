@@ -30,7 +30,7 @@ export PATH=$STREAMSETS_HOME$PATH
 
 
 ### Docker Installation
-1. Create that docker-compose.yml is in project directory
+1. Create the docker-compose.yml in project directory
 2. Create named volumes and bind them to your local repository.
 ```
 docker volume create -d local -o o=bind -o type=none -o device="path_to_store_docker_volumes" neo-data
