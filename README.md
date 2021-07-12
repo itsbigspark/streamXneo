@@ -91,4 +91,4 @@ docker run --rm -v sdc-stagelibs:/opt/streamsets-datacollector-3.20.0/streamsets
 * [Raymond Klutse](https://github.com/raymondklutse)
 
 # License
-This project is licensed with the [Apache License 2.0]()
+This project is licensed with the [Apache License 2.0](https://github.com/itsbigspark/streamXneo/blob/main/LICENSE)
