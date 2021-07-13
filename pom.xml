@@ -115,9 +115,9 @@
                <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>
               </descriptorRefs>
-              <outputDirectory>
+              <!-- <outputDirectory>
                 ${targetDir}/${project.artifactId}/lib
-              </outputDirectory>
+              </outputDirectory> -->
             </configuration>
           </execution>
         </executions>
