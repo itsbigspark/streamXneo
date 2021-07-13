@@ -198,7 +198,12 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
 
           if(value instanceof String){
             String valueString = (String) value;
-            query  += field + ": '" + valueString + "', ";
+            query  += field + ": '" + valueString.replace("\"", "") + "', ";
+          }
+
+          else if(value instanceof Double){
+            Double valueDouble = (Double) value;
+            query  += field + ":" + valueDouble + ", ";
           }
 
           else{
@@ -215,7 +220,7 @@ public abstract class NeoTarget extends BaseTarget implements AutoCloseable {
 
       PreparedStatement stmt = connection.prepareStatement(query);
       
-      ResultSet rs = stmt.executeQuery();
+      stmt.executeQuery();
 
     } 
     catch (Exception e) {
