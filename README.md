@@ -1,5 +1,11 @@
 # StreamXNeo
-StreamXNeo consists of custom stages to build a pipeline using Neo4j.
+StreamXNeo is a java software package which consists of custom stages to build data pipelines in Streamsets using Neo4j. The current stages available for testing are : 
+
+* Neo4j Processor : processor to remove fields from a record
+
+* Neo4j Destination : destination to export data into Neo4j
+
+You can build your data pipeline using the above stages together with others provided by Streamsets.
 
 # Table of Contents
 * [Installation](#installation)  
