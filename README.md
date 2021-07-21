@@ -64,7 +64,7 @@ permission java.io.FilePermission "/usr/lib/os-release", "read";
 permission java.util.PropertyPermission "*", "read,write";
 ```
 
-2. Download the most recent jar from the [assets](https://github.com/itsbigspark/streamXneo/packages/887595) section
+2. Download the most recent jar from the [assets](https://github.com/itsbigspark/streamXneo/packages/896445) section
 
 3. Copy jar file to /path_to_streamsets/user_lib/streamxneo/lib
 
