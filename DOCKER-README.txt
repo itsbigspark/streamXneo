@@ -2,10 +2,10 @@ Docker Installation
 
 1) Create the docker compose file attached.
 2) Create named volumes and bind them to your local repository.
-	docker volume create -d local -o o=bind -o type=none -o device="path_to_store_docker_volumes" neo-data
-	docker volume create -d local -o o=bind -o type=none -o device="path_to_store_docker_volumes" neo-logs
-	docker volume create -d local -o o=bind -o type=none -o device="path_to_store_docker_volumes" sdc-data
-	docker volume create -d local -o o=bind -o type=none -o device="path_to_store_docker_volumes" sdc-stagelibs 
+	docker volume create -d local -o o=bind -o type=none -o device="path/to/docker_volumes" neo-data
+	docker volume create -d local -o o=bind -o type=none -o device="path/to/docker_volumes" neo-logs
+	docker volume create -d local -o o=bind -o type=none -o device="path/to/docker_volumes" sdc-data
+	docker volume create -d local -o o=bind -o type=none -o device="path/to/docker_volumes" sdc-stagelibs 
 3) Docker compose will allow you to run both the apps on same network.
 4) Go to the folder with docker-compose.yml file.
 5) Use the below command.
