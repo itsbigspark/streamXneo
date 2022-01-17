@@ -39,10 +39,10 @@ export PATH=$STREAMSETS_HOME$PATH
 1. Create the docker-compose.yml in project directory
 2. Create named volumes and bind them to your local repository.
 ```
-docker volume create -d local -o o=bind -o type=none -o device="path_to_store_docker_volumes" neo-data
-docker volume create -d local -o o=bind -o type=none -o device="path_to_store_docker_volumes" neo-logs
-docker volume create -d local -o o=bind -o type=none -o device="path_to_store_docker_volumes" sdc-data
-docker volume create -d local -o o=bind -o type=none -o device="path_to_store_docker_volumes" sdc-stagelibs 
+docker volume create -d local -o o=bind -o type=none -o device="path/to/docker_volumes" neo-data
+docker volume create -d local -o o=bind -o type=none -o device="path/to/docker_volumes" neo-logs
+docker volume create -d local -o o=bind -o type=none -o device="path/to/docker_volumes" sdc-data
+docker volume create -d local -o o=bind -o type=none -o device="path/to/docker_volumes" sdc-stagelibs 
 ```
 
 3. Docker compose will allow you to run both the apps on same network.
